@@ -53,15 +53,15 @@
 \begin{document}
 
 \begin{enumerate}
-{% for exc in exclist recursive %}
-  {% if exc['question'] is string %}
- Question: {{ exc['question'] }}
-  {% elif exc['question'] is iterable %}
+%{ for exc in exclist recursive %}
+  %{ if exc['question'] is string %}
+ Question: %{{ exc['question'] %}}
+  %{ elif exc['question'] is iterable %}
     \begin{enumerate}
-      {{ loop(exc['question']) }}
+      %{{ loop(exc['question']) %}}
     \end{enumerate}
-    {% endif %}
-{% endfor %}
+    %{ endif %}
+%{ endfor %}
 \end{enumerate}
 
 \end{document}

@@ -12,11 +12,42 @@ args = parser.parse_args()
 inputfilename = "perverse-sheaves.yml"
 outputfilename = "questions.tex"
 
-with open(args.template) as templatefile, \
-     open(inputfilename) as inputfile, \
+
+# unfortunately, if you want to render a jinja template that is stored in a
+# file, you need to go through a convoluted process of creating an
+# "Environment" instance that contains the configuration. It can, for example,
+# contain global variables that are available in all of the templates
+
+jinjaEnv = jinja2.Environment(
+    # this says that this jinja environment loads templates by looking for
+    # files in the current directory
+    loader=jinja2.FileSystemLoader('./'),
+    # Change the default delimiters used by Jinja such that it won't pick up
+    # brackets attached to LaTeX macros.
+    block_start_string = '%{',
+    block_end_string = '%}',
+    comment_start_string = '%{#',
+    comment_end_string = '%#}',
+    variable_start_string = '%{{',
+    variable_end_string = '%}}',
+    autoescape=jinja2.select_autoescape(['htm', 'html', 'xml']))
+
+with open(inputfilename) as inputfile, \
      open(outputfilename) as outputfile:
     qs = yaml.load_all(inputfile)
 
+    jinjatemplate = jinjaEnv.get_template(args.template)
+    outputfile.write(jinjatemplate.render(exclist=qs))
+
+
+
+    # temp
+with open(inputfilename, 'r') as inputfile, \
+     open(outputfilename, 'w') as outputfile:
+    qs = yaml.load_all(inputfile)
+
+    jinjatemplate = jinjaEnv.get_template(template)
+    outputfile.write(jinjatemplate.render(exclist=qs))
 
 
 def printExercise(exc, f = outputfile):
