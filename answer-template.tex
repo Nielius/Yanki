@@ -56,6 +56,12 @@
 %{ for exc in exclist recursive %}
   %{ if exc['question'] is string %}
  \item %{{ exc['question'] %}}
+
+   \small
+   %{{ exc['answer'] %}}
+   \emph{Reference:}
+   %{{ exc['ref'] %}}
+   \normalsize
   %{ elif exc['question'] is iterable %}
    \item
     \begin{enumerate}
