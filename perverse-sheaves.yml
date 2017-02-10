@@ -82,13 +82,13 @@ answer: |
   category too.
 
 
-  $f^*$ is not left-exact --- in special cases,
-  it is the same as taking the fiber. (This is not exact: take e.g. $\cO \incl
-  \cO(x)$; looking at the fiber is the same as considering the ``value'',
-  but of course this is different in $\cO$ than in $\cO(x)$.)
-  Or differently: we restrict to some closed subscheme,
-  so of course the submodule of all functions vanishing there will be zero.
-  Algebraically: we mod out by some ideal.
+  $f^*$ is not left-exact --- in special cases, it is the same as taking the
+  fiber. (This is not exact: take e.g. $\cO \incl \cO(x)$; looking at the fiber
+  is the same as considering the ``value'', but of course this is different in
+  $\cO$ than in $\cO(x)$.) Or differently: we restrict to some closed subscheme,
+  so of course the submodule of all functions vanishing there will be zero (so
+  it does not preserve the inclusion of this submodule). Algebraically: we mod
+  out by some ideal.
 
   $f_*$ is not right-exact -- in the case $f \colon X \to \pt$,
   this is just taking global sections. This is not right exact,
