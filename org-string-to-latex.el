@@ -1,5 +1,8 @@
 #!emacs --script
 
+;; This is not needed anymore, since it turns out that org-mode has its own
+;; "org-export-string-as" function that essentially does the same.
+
 (require 'org)
 
 (setq mstr (pop command-line-args-left))
