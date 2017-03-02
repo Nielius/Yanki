@@ -1,3 +1,5 @@
+#!emacs --script
+
 (require 'org)
 
 (setq mstr (pop command-line-args-left))
