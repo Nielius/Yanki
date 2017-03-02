@@ -28,7 +28,7 @@ parser.add_argument('--template', '-t',
 parser.add_argument('--input', '-i',
                      help='A YAML file that contains questions, refs, answers.',
                      default='perverse-sheaves.yml')
-parser.add_argument('--output', '-o'
+parser.add_argument('--output', '-o',
                     help='the output .tex file',
                     default='questions.tex')
 args = parser.parse_args()
