@@ -19,7 +19,8 @@ import argparse
 import yaml
 import jinja2
 import base64
-from subprocess import call
+import subprocess
+# import IPython # for debugging purposes
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--template', '-t',
@@ -58,26 +59,22 @@ jinjaEnv = jinja2.Environment(
     autoescape=jinja2.select_autoescape(['htm', 'html', 'xml']))
 
 
-# Actual work
-with open(inputfilename) as inputfile, \
-     open(outputfilename, 'w') as outputfile:
-    qs = yaml.load_all(inputfile)
-
-    jinjatemplate = jinjaEnv.get_template(args.template)
-    outputfile.write(jinjatemplate.render(exclist=qs))
-
 
 # There is no such function; the easiest way to do this is to use a dict comprehension:
 
 # my_dictionary = {k: f(v) for k, v in my_dictionary.items()}
 
-def myfun(d):
-  for k, v in d.iteritems():
-    if isinstance(v, dict):
-      d[k] = myfun(v)
-    else:
-      d[k] = f(v)
-  return d
+# Map over all the string in the strange data structure that I have set up:
+# EXERCISE = {QUESTION, ANSWER, REF}  (so a dictionary)
+# QUESTION = STR | LIST OF EXERCISES
+
+def dictlistmap(fun, dic):
+  for k, v in dic.items():
+    if isinstance(v, list):
+      dic[k] = (dictlistmap(fun, w) for w in v)
+    elif (dic[k] and isinstance(dic[k], str)):
+      dic[k] = fun(v)
+  return dic
 
 def b64decodestring (s):
     """I only created this function because b64decode and b64encode require bytes,
@@ -95,10 +92,27 @@ be running."""
     # should work, except that the function names are of course wrong; might
     # also need to trim the quotes from the returned string; or use princ in
     # the emacs command?
-    emacsoutput = subprocess.check_output("emacsclient-snapshot -e '(base64-encode-string (org-export-string-as (base64-decode-string \"{}\") '\"'\"'latex t))'".format(b64encodestring(s)), shell=True)
+    emacsoutput = subprocess.check_output("emacsclient-snapshot -e '(base64-encode-string (org-export-string-as (base64-decode-string \"{}\") '\"'\"'latex t) t)'".format(b64encodestring(s)), shell=True)
+    # Note: the t in emacs's base64-encode-string ensures that there are no newlines in the output.
 
     # now we need to format the output (which is a bytetype object of a b64 string plus newlines and quotes) and decode it
     return b64decodestring(bytes.decode(emacsoutput).strip().strip('"'))
+
+
+# THE ACTUAL WORK
+# -----------
+with open(inputfilename) as inputfile, \
+     open(outputfilename, 'w') as outputfile:
+    qs = yaml.load_all(inputfile)
+
+    # IPython.embed() # for debugging purposes
+
+    # Convert all the org strings to latex strings
+    qsconv = map((lambda x: dictlistmap(orgToLatex, x)), qs)
+
+    jinjatemplate = jinjaEnv.get_template(args.template)
+    outputfile.write(jinjatemplate.render(exclist=qsconv))
+
 
 
 
