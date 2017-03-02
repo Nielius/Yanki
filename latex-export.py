@@ -1,6 +1,7 @@
 import argparse
 import yaml
 import jinja2
+import base64
 from subprocess import call
 
 parser = argparse.ArgumentParser()
@@ -50,6 +51,38 @@ with open(inputfilename) as inputfile, \
     outputfile.write(jinjatemplate.render(exclist=qs))
 
 
+# There is no such function; the easiest way to do this is to use a dict comprehension:
+
+# my_dictionary = {k: f(v) for k, v in my_dictionary.items()}
+
+def myfun(d):
+  for k, v in d.iteritems():
+    if isinstance(v, dict):
+      d[k] = myfun(v)
+    else:
+      d[k] = f(v)
+  return d
+
+def b64decodestring (s):
+    """I only created this function because b64decode and b64encode require bytes,
+not strings."""
+    return bytes.decode(base64.b64decode(str.encode(s)))
+
+def b64encodestring (s):
+    """I only created this function because b64decode and b64encode require bytes,
+not strings."""
+    return bytes.decode(base64.b64encode(str.encode(s)))
+
+def orgToLatex(s):
+    """Convert an org string to LaTeX. For this to work, an emacs-snapshot has to
+be running."""
+    # should work, except that the function names are of course wrong; might
+    # also need to trim the quotes from the returned string; or use princ in
+    # the emacs command?
+    emacsoutput = subprocess.check_output("emacsclient-snapshot -e '(base64-encode-string (org-export-string-as (base64-decode-string \"{}\") '\"'\"'latex t))'".format(b64encodestring(s)), shell=True)
+
+    # now we need to format the output (which is a bytetype object of a b64 string plus newlines and quotes) and decode it
+    return b64decodestring(bytes.decode(emacsoutput).strip().strip('"'))
 
 def printExercise(exc, f = outputfile):
     """Print an exercise not using templates, but directly from python."""
