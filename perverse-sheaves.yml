@@ -42,7 +42,7 @@ question: bewijs de exactheid (via in-degree-0-heid) van nearby cycles [[https:/
 answer: null # je kunt null typen of het gewoon leeg laten
 ref: null
 ---
-question:
+question: |
   Bewijs de links/rechts-exactheid van alle six functors en geef
   tegenvoorbeelden. Noem de situaties waarin de functor vanwege een eigenschap
   als "gesloten embedding" ofzo toch wel exact is. Ihb: beantwoord deze vraag
