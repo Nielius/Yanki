@@ -4,6 +4,16 @@
 # This is the main file in my question maker project. It converts a YAML-file
 # with questions, answers and references into a nice tex file that can then be
 # compiled.
+#
+# How it works:
+# It is actually just a small wrapper script. It does the following:
+# - interpret the command line argument
+# - load the files
+# - fill in the template with jinja2.
+#
+# Using the jinja2 template wasn't as easy as it sounds, because you have to
+# configure the rights blocks, since latex interferes a lot with the blocks
+# that are the standard definition.
 
 import argparse
 import yaml
@@ -17,7 +27,7 @@ parser.add_argument('--template', '-t',
 parser.add_argument('--input', '-i',
                      help='A YAML file that contains questions, refs, answers.',
                      default='perverse-sheaves.yml')
-parser.add_argument('--output',
+parser.add_argument('--output', '-o'
                     help='the output .tex file',
                     default='questions.tex')
 args = parser.parse_args()
