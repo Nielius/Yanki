@@ -1,3 +1,20 @@
+# File: latex-export.py
+#
+# Description:
+# This is the main file in my question maker project. It converts a YAML-file
+# with questions, answers and references into a nice tex file that can then be
+# compiled.
+#
+# How it works:
+# It is actually just a small wrapper script. It does the following:
+# - interpret the command line argument
+# - load the files
+# - fill in the template with jinja2.
+#
+# Using the jinja2 template wasn't as easy as it sounds, because you have to
+# configure the rights blocks, since latex interferes a lot with the blocks
+# that are the standard definition.
+
 import argparse
 import yaml
 import jinja2
@@ -11,7 +28,7 @@ parser.add_argument('--template', '-t',
 parser.add_argument('--input', '-i',
                      help='A YAML file that contains questions, refs, answers.',
                      default='perverse-sheaves.yml')
-parser.add_argument('--output',
+parser.add_argument('--output', '-o'
                     help='the output .tex file',
                     default='questions.tex')
 args = parser.parse_args()
@@ -19,7 +36,7 @@ args = parser.parse_args()
 inputfilename = args.input
 outputfilename = args.output
 
-# Jinja setus
+# Jinja setup
 # =======
 # unfortunately, if you want to render a jinja template that is stored in a
 # file, you need to go through a convoluted process of creating an
@@ -39,7 +56,6 @@ jinjaEnv = jinja2.Environment(
     variable_start_string = '%{{',
     variable_end_string = '%}}',
     autoescape=jinja2.select_autoescape(['htm', 'html', 'xml']))
-
 
 
 # Actual work
@@ -84,6 +100,12 @@ be running."""
     # now we need to format the output (which is a bytetype object of a b64 string plus newlines and quotes) and decode it
     return b64decodestring(bytes.decode(emacsoutput).strip().strip('"'))
 
+
+
+# DEPRECATED FUNCTIONS
+# Mostly because they have been replace with the jinja2 template system.
+
+# DEPRECATED --- replaced by templates
 def printExercise(exc, f = outputfile):
     """Print an exercise not using templates, but directly from python."""
     # I could also use a template engine such as Jinja2, Cheetah, Django (?)
@@ -116,6 +138,7 @@ def printExercise(exc, f = outputfile):
     if exc.get('ref'):
        f.write('\\emph{Reference}:' + exc['ref'] + '\n\n')
 
+# DEPRECATED --- replaced by templates
 def writeFile():
     """Do not use jinja templates, but write directly to the files."""
     # TODO: this function doesn't work and I'm probably not going to use it
