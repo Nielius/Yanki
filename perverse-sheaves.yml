@@ -45,7 +45,8 @@ ref: null
 question:
   Bewijs de links/rechts-exactheid van alle six functors en geef
   tegenvoorbeelden. Noem de situaties waarin de functor vanwege een eigenschap
-  als "gesloten embedding" ofzo toch wel exact is.
+  als "gesloten embedding" ofzo toch wel exact is. Ihb: beantwoord deze vraag
+  nog een keer voor $i$ een gesloten embedding en $j$ een open embedding.
 answer: |
   The six operations:
   $f^!$, $f_!$, $f_*$, $f^*$, $\Hom(\dash, \dash$, $\otimes$ (where the Hom and
@@ -88,7 +89,8 @@ answer: |
   $\cO$ than in $\cO(x)$.) Or differently: we restrict to some closed subscheme,
   so of course the submodule of all functions vanishing there will be zero (so
   it does not preserve the inclusion of this submodule). Algebraically: we mod
-  out by some ideal.
+  out by some ideal. NB: $f^{-1}$ for $f$ the inclusion of a point is taking the
+  stalk; but in $f^*$ we also tensor, so that we get in fact the fiber.
 
   $f_*$ is not right-exact -- in the case $f \colon X \to \pt$,
   this is just taking global sections. This is not right exact,
@@ -98,6 +100,11 @@ answer: |
   This means that some collection of germs may glue to a global section of $\cG$
   while at the same time not glueing to a global section of $\cF$.
   Homological viewpoint: we know that some sheaves have higher cohomology groups.
+  But monodromy can also be a problem: if we consider sheaf of sets on $j \colon \bC^* \incl \bC$,
+  and $F$ corresponds to the universal cover of $\bC^*$, while $G$ is constantly one element,
+  then $F \to G$ is a surjection, but $j_* F \to j_* G$ is not, as is easily seen by looking at the stalk at zero
+  (which is empty for $F$, but not for $G$).
+
 
   $f_!$ \emph{is} left-exact, \emph{contrary to what you would expect} from the adjunction --
   says [[https://math.berkeley.edu/~vivek/274/lec7.pdf][Vivek Shende]].
@@ -125,10 +132,21 @@ answer: |
   [[https://mathoverflow.net/questions/3312/when-does-direct-image-with-proper-support-have-a-right-adjoint][gerelateerde info]]
 
   Of course, if $i_* = i_!$ (closed embedding), then both are exact (as they are
-  both a left- and a right-adjoint). Similarly if $j^! = j^*$ (open embedding).
-  But there are some surprises: $j_!$ is also left-exact (it is extension by
-  zero), so exact; and $i^*$ is also left-exact (it is restriction; and you ``keep
-  infinitesimal information'')
+  both a left- and a right-adjoint (since $i^!$ exists as an actual
+  (non-derived) functor by
+  [[pdfview:/home/niels/md/Iversen,%20Birger%20-%20Cohomology%20of%20sheaves-Springer-Verlag%20(1986).djvu::118][prop
+  6.6]] in Iversen). Similarly if $j^! = j^*$ (open embedding). But there are
+  some surprises: $j_!$ is also right-exact (it is extension by zero), so exact;
+  and $i^*$ is also left-exact (it is restriction; and you ``keep infinitesimal
+  information'').
+  However, $j_*$ and $i^!$ are still only left-exact (all the others are in fact exact),
+  as is also claimed in [[pdfview:/home/niels/md/perverse-sheaves/BBD.djvu::23][BBD]] (start of §1.4).
+  The functor $j_*$ is not right-exact because of monodromy problems (see above for $f_*$);
+  the functor $i^!$ is not right-exact: take a locally constant sheaf mapping surjectively to a torsion sheaf
+  supported at a point $x$; then pull back by the embedding of $x$
+
+  Interesting question: can you get all useful information for locally closed
+  $Z$ by knowing how it works for open and how it works for closed?
 
   Some cases 
 ref:
