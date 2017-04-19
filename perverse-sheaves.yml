@@ -256,7 +256,7 @@ question: |
   bewijs excision met six functor formalism -- definieer eerst cohomologie van
   een paar; bewijs dan excisie voor $Y \subset U \subset X$ met $U$ open en $Y$
   gesloten in $X$
-nswer:
+answer:
 ref: "[[pdfview:/home/niels/md/perverse-sheaves/Massey,%20Notes%20on%20perverse%20sheaves%20and%20vanishing%20cycles.pdf::11][onderaan]]"
 ---
 question: in welke richting van proper base change heb je altijd een morfisme?
