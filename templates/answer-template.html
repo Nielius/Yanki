@@ -1,0 +1,14 @@
+<title>Test</title>
+<ul>
+{% for exc in exclist recursive %}
+  {% if exc['question'] is string %}
+    <li> {{ exc['question'] }} </li>
+  {% elif exc['question'] is iterable %}
+   <ul>
+       <li>
+      {{ loop(exc['question']) }}
+       </li>
+   </ul>
+    {% endif %}
+{% endfor %}
+</ul>
