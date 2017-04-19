@@ -7,8 +7,8 @@
 import argparse
 import pymongo
 import jinja2
-import base64
-import subprocess
+from orgConverter import orgConvert
+from dictlistmap import dictlistmap
 import sys
 # import IPython # for debugging purposes
 
@@ -36,8 +36,9 @@ outputfilename = args.output
 jinjaEnv = jinja2.Environment(
     # this says that this jinja environment loads templates by looking for
     # files in the current directory
-    loader=jinja2.FileSystemLoader('/home/niels/tmp/questionmaker/templates/'),
-    autoescape=jinja2.select_autoescape(['htm', 'html', 'xml']))
+    loader=jinja2.FileSystemLoader('/home/niels/tmp/questionmaker/templates/')
+    # autoescape=jinja2.select_autoescape(['htm', 'html', 'xml'])
+)
 
 
 # THE ACTUAL WORK
@@ -51,5 +52,17 @@ if outputfilename:
 else:
   outputfile = sys.stdout
 
+orgConvertFn = (lambda x: orgConvert(x, 'html'))
+
 jinjatemplate = jinjaEnv.get_template(args.template)
-outputfile.write(jinjatemplate.render(exclist=[x for x in collection.find()]))
+outputfile.write(jinjatemplate.render(exclist=[dictlistmap(orgConvertFn, x) for x in collection.find()]))
+
+# je kunt zoiets ook redelijk makkelijk handmatig doen:
+# # import pymongo
+# from pymongo import MongoClient
+# client = MongoClient('localhost', 27017)
+
+# db = client['bibtex'].entries
+
+# for i, result in enumerate(db.find({"year" : {"$lt": "1950"}})):
+#     print('{i: 2d}. {author}, {title}, {journal}, {year}.'.format(i=i+1, **result))

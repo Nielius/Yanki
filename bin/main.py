@@ -18,8 +18,7 @@
 import argparse
 import yaml
 import jinja2
-import base64
-import subprocess
+from orgConverter import orgConvert
 # import IPython # for debugging purposes
 
 parser = argparse.ArgumentParser()
