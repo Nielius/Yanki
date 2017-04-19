@@ -1,0 +1,53 @@
+\documentclass[11pt,a4]{amsart}
+% packages
+\usepackage{/home/niels/studie/mijnpackages}
+\usepackage{multirow}
+\usepackage{stmaryrd} % for mapsfrom
+
+% \usepackage{parskip}                % type paragrafen
+%\usepackage[a4paper,margin=4.2cm]{geometry}      % hiermee kun je ook marges aanpassen
+% \usepackage{amsmath}
+% \usepackage{staves}
+% \usepackage{amsfonts}
+% \usepackage{amssymb}                
+% \usepackage{enumerate}              % geef aan wat voor enumerate
+% \usepackage{amsthm}                 % ams-theorems
+% \usepackage{mathtools}              % o.a. voor mathclap
+% %\usepackage{ntheorem}               % voor \thref : geeft theorem 9.2 ipv 9.2
+% \usepackage{fancyhdr}               % mooie headers
+% \usepackage{lastpage}               % ondersteuning bij fancydr
+% \usepackage{hyperref}
+% \usepackage{cleveref}               % voor slimme referenties: \cref{thm3} geeft 'theorem 9.2'
+% \usepackage{booktabs}               % voor mooie tabellen; zie http://www.ctan.org/tex-archive/macros/latex/contrib/booktabs/
+% \usepackage{microtype}              % voor kleine, bijna onzichtbare verbeteringen
+% \usepackage{fixltx2e}               % fixes minor things
+% \usepackage{nag} % complains about deprecated commands/packages
+% \usepackage[usenames,dvipsnames,svgnames,table]{xcolor} % voor kleuren
+% \usepackage[all,cmtip]{xy}          % voor commutatieve diagrammen
+
+
+\numberwithin{equation}{section} % make the number of the section appear
+                                % in the number of an equation
+
+
+\DeclareMathOperator{\Bun}{Bun}
+\DeclareMathOperator{\Fun}{Fun}
+\DeclareMathOperator{\Supp}{Supp}
+\newcommand{\setbuilder}[2]{\left\{#1 : 
+  \begin{array}{c}
+    #2
+  \end{array}
+  \right\}}
+
+\newcommand{\Bunrel}[1]{\Bun_{2,4}^{#1,\mathrm{r}}}
+\newcommand{\Homparainjsat}{\Hom_{\text{para}}^{\text{inj, sat}}}
+
+\newcommand{\cF}{\mathcal F}
+\DeclareMathOperator{\pr}{pr}
+
+\draftfalse % draftfalse or drafttrue
+
+% \author{Niels uit de Bos}
+\title{Title}
+\date{\today}
+\begin{document}
