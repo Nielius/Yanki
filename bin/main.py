@@ -21,7 +21,8 @@ import jinja2
 from orgConverter import orgConvert
 # import IPython # for debugging purposes
 
-parser = argparse.ArgumentParser()
+parser = argparse.ArgumentParser(description='''Script to apply a jinja2 template to a yaml file
+  describing a set of questions, possibly with answers and references.''')
 parser.add_argument('--template', '-t',
                     help="use given file as a jinja2 template file",
                     default='latex-template.tex')

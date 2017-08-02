@@ -1,6 +1,8 @@
 # File: new.py
 #
-# Command line tool to apply jinja2 template to
+# Command line tool to apply jinja2 template to a set of questions.
+# The difference between this script and the script main.py is that this script
+# uses a MongoDB as a back-end, instead of a yaml file.
 #
 # Input: query & template
 
