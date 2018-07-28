@@ -1,15 +1,15 @@
 ---
 # *** characterisation of normality
-question: |
+question: >-
   Classify the normal integral affine curves among the integral affine curves
   in terms of the function field, and in terms of open subsets.
-answer: |
+answer: >-
   Every finite morphism that induces an isomorphism on the function fields, is in fact an isomorphism.
   (Isn't finiteness automatic? Probably not.)
   In other words, it is the largest finite extension with the same fraction field.
   This can again be rephrased as: if a finite morphism is an isomorphism on an open subset,
   then it is an isomorphism.
-ref: |
+ref: >-
   [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=118](Szamuely, 4.3.12)
 ---
 # fundamental group of integral proper normal curve over $\bC$ minus $n$ points
@@ -25,7 +25,8 @@ ref: |
   [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=130](4.6.7) in Szamuely
 ---
 # prove that every finite simple group is the Galois group of a cover of $\bP^1\setminus\{0,1,\infty\}$
-ref: | [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=131](4.6.12)
+ref: |
+  [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=131](4.6.12)
 ---
 # *** Grothendieck's theorem about the fundamental group of $U \subset X$, $X$ proper normal integral over any $k = \bar k$
 question: |
