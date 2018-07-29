@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="author" content="Niels" />
+<style type="text/css">
+
+ body {
+     width: 720px;
+     margin-left: auto;
+     margin-right: auto;
+     line-height: 1.5em;
+ }
+
+ body > ul > li {
+     list-style-type: none;
+     margin-top: 1.5em;
+     margin-bottom: 1.5em;
+ }
+
+ summary > p:first-child, summary > div > p:first-child {
+     display: inline;
+ }
+
+ details[open] {
+     background: yellow;
+ }
+
+ /* should stylize the arrow in the summary element when you hover over it,but doesn't work
+Found it here:
+    https://stackoverflow.com/questions/39622394/how-to-style-the-arrow-of-details-summary-elements
+
+More information about how to stylize the arrow:
+html - How to style the arrow of <details> <summary> elements? - Stack Overflow
+https://stackoverflow.com/questions/39622394/how-to-style-the-arrow-of-details-summary-elements
+
+html - How to remove the arrow from a select element in Firefox - Stack Overflow
+https://stackoverflow.com/questions/5912791/how-to-remove-the-arrow-from-a-select-element-in-firefox
+
+css - Replace the expand ( ▶) icon of HTML5 details tag - Stack Overflow
+https://stackoverflow.com/questions/10813581/replace-the-expand-icon-of-html5-details-tag */
+ details:hover summary::-webkit-details-marker:hover {
+     color:red;
+     background:white;
+ }
+
+ details summary::-webkit-details-marker {
+     background: red;
+     color: #fff;
+     font-size: 500%;
+}
+
+</style>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML">
+</script>
+<title>Test</title>
+</head>
+<body>
+
+    {# here the ACTUAL WORK starts #}
+
+    <ul>
+        {% for exc in exclist recursive %}
+        <li>
+            <details class="exercise">
+                <summary class="question">
+                    {{ exc['question'] }}
+                </summary>
+                <div class="answer">
+                    {{ exc['answer'] }}
+                </div>
+                <div class="ref">
+                    {{ exc['ref'] }}
+                </div>
+            </details>
+        </li>
+        {% endfor %}
+</ul>
+
+
+</body>
+</html>
