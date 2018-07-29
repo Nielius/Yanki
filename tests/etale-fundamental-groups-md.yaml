@@ -1,126 +1,127 @@
----
-# *** characterisation of normality
-question: >-
-  Classify the normal integral affine curves among the integral affine curves
-  in terms of the function field, and in terms of open subsets.
-answer: >-
-  Every finite morphism that induces an isomorphism on the function fields, is in fact an isomorphism.
-  (Isn't finiteness automatic? Probably not.)
-  In other words, it is the largest finite extension with the same fraction field.
-  This can again be rephrased as: if a finite morphism is an isomorphism on an open subset,
-  then it is an isomorphism.
-ref: >-
-  [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=118](Szamuely, 4.3.12)
----
-# fundamental group of integral proper normal curve over $\bC$ minus $n$ points
-question: |
-  Let $U \subset C$ be an open in an integral proper normal curve $C$ over $\bC$ with the complement
-  consisting of $n$ points. Give a presentation of $\pi_1^{\mathrm{et}}(U)$.
-answer: |
-  It is the same as the profinite completion of the Riemann surface associated
-  to $U$. That means that a presentation is given by the loops coming from the
-  genus (2 for each hole, $a_i$ and $b_i$) and one loop for every missing point,
-  with the relation $[a_1, b_1] \cdots [a_g, b_g] \gamma_1 \cdots \gamma_n = 1$.
-ref: |
-  [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=130](4.6.7) in Szamuely
----
-# prove that every finite simple group is the Galois group of a cover of $\bP^1\setminus\{0,1,\infty\}$
-ref: |
-  [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=131](4.6.12)
----
-# *** Grothendieck's theorem about the fundamental group of $U \subset X$, $X$ proper normal integral over any $k = \bar k$
-question: |
-  Let $X$ be a integral normal proper curve over an algebraically closed field of characteristic $p \geq 0$
-  of genus $g$
-  and let $U \subset X$ be an open subset (complement of $n$ points).
-  What is the prime-to-p completion of $\pi_1(U)$?
-  If $\char k > 0$, what is its pro-p-part?
-answer: |
-  The profinite prime-to-p completion is exactly the same as over $\bC$ (see previous question).
-  The pro-p-part iis a free pro-p group of rank the $p$-rank of the Jacobian if $U = X$
-  (which, by definition, is $\dim_{\bF_p} \ker ([p] \colon A(k) \to A(k))$)
-  and of infinite rank equal to the cardinality of $k$ otherwise.
-ref: |
-  [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=142](4.9.1); for pro-p-part, see [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=143](4.9.4); ideas about the proof come in [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=196](5.7.13) (?)
----
-# what can you say about hyperbolic curves over a finite field
-question: |
-  What can you say about hyperbolic curves over a finite field?
-answer: |
-  By a theorem by Tamagawa and Mochizuki,
-  the isomorphism between such curves are in bijection (via the natural map)
-  with the isomorphisms between the fundamental groups.
-ref: |
-  [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=146](4.9.8)
----
-# state the homotopy exact sequence
-question: |
-  State the homotopy exact sequence. What are the conditions on the scheme?
-ref: |
-  [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=182](5.6.1) in Szamuely
----
-# relative version of homotopy exact sequence
-question: |
-  What is a relative analogue to the homotopy exact sequence?
-ref: |
-  [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=183](5.6.4) in Szamuely
----
-# Stein factorisation
-question: |
-  State the Stein factorisation. Prove it.
-answer: |
-  Any proper morphism factors as a finite morphism followed by a morphism ``with
-  geometrically connected fibers'' (actually, a morphism with $\phi_* \cO_X = \cO_S$, which implies
-  geometrically connected fibers).
-ref: |
-  [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=184](5.6.5) in Szamuely
----
-# fundamental group of product
-question: |
-  When is the fundamental group of a product isomorphic to the product of the fundamental groups?
-answer: |
-  Need Noetherian schemes over an algebraically closed fieldm with one of them being proper and geometrically integral.
-ref: |
-  [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=184](5.6.6) in Szamuely
----
-# finite étale covers of abelian varieties
-question: |
-  What can you say about the finite étale cover of an abelian variety?
-answer: |
-  The cover can be given the structure of an abelian variety, such that the map is an isogeny.
-ref: |
-  [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=186](5.6.8)
----
-# fundamental group of abelian varieties
-question: |
-  What is the étale fundamental group of an abelian variety?
-answer: |
-  If you're over an algebraically closed field (otherwise, there is of course the arithmetic contribution),
-  it is commutative and isomorphic to the full Tate module (which is the product of all $T_\ell(A)$).
-ref: |
-  [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=188](5.6.10)
----
-# state the Lefschetz hyperplane theorem
-question: |
-  What does the Lefschetz hyperplane theorem say about étale fundamental groups?
-  What does it say in general?
-answer: |
-  For a scheme of dimension at least 3, ....? Need better reference first. 
-ref: |
-  [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=189](5.7.3); should be better references somewhere
----
-# Cebotarev density
-question: State the Cebotarev density theorem.
-answer: |
-  Take a Galois cover $Y \to X$ (not sure why this is necessary)
-  and let $G$ be the Galois group.
-  Then every subset $C \subset G$ (note: subset, not even subgroup!) 
-  that is stable under conjugation contains
-  the image of some Frobenius element in $\pi_1(X,x)$ (and hence its entire conjugacy class).
-  A different (more general? only works for number fields?) statement can be found in [http://www.math.leidenuniv.nl/~hwl/papers/cheb.pdf](these notes) by Lenstra and Stevenhagen:
-  it says that for any Galois extension of a number field, with Galois group $G$,
-  and any conjugacy class $C \subset G$,
-  $\# C/\#G$ is the density of the primes that have a Frobenius element in $C$.
-ref: |
-   [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=207](5.8.18)
-...
+-
+  # *** characterisation of normality
+  question: >-
+    Classify the normal integral affine curves among the integral affine curves
+    in terms of the function field, and in terms of open subsets.
+  answer: >-
+    Every finite morphism that induces an isomorphism on the function fields, is in fact an isomorphism.
+    (Isn't finiteness automatic? Probably not.)
+    In other words, it is the largest finite extension with the same fraction field.
+    This can again be rephrased as: if a finite morphism is an isomorphism on an open subset,
+    then it is an isomorphism.
+  ref: >-
+      [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=118](Szamuely, 4.3.12)
+-
+  # fundamental group of integral proper normal curve over $\bC$ minus $n$ points
+  question: >-
+    Let $U \subset C$ be an open in an integral proper normal curve $C$ over $\bC$ with the complement
+    consisting of $n$ points. Give a presentation of $\pi_1^{\mathrm{et}}(U)$.
+  answer: >-
+    It is the same as the profinite completion of the Riemann surface associated
+    to $U$. That means that a presentation is given by the loops coming from the
+    genus (2 for each hole, $a_i$ and $b_i$) and one loop for every missing point,
+    with the relation $[a_1, b_1] \cdots [a_g, b_g] \gamma_1 \cdots \gamma_n = 1$.
+  ref: >-
+    [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=130](4.6.7) in Szamuely
+-
+  # prove that every finite simple group is the Galois group of a cover of $\bP^1\setminus\{0,1,\infty\}$
+  question: >-
+    Prove that every finite simple group is the Galois group of a cover of $\bP^1 \setminus \{0,1,\infty\}$.
+  ref: >-
+    [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=131](4.6.12)
+-
+  # *** Grothendieck's theorem about the fundamental group of $U \subset X$, $X$ proper normal integral over any $k = \bar k$
+  question: >-
+    Let $X$ be a integral normal proper curve over an algebraically closed field of characteristic $p \geq 0$
+    of genus $g$
+    and let $U \subset X$ be an open subset (complement of $n$ points).
+    What is the prime-to-p completion of $\pi_1(U)$?
+    If $\char k > 0$, what is its pro-p-part?
+  answer: >-
+    The profinite prime-to-p completion is exactly the same as over $\bC$ (see previous question).
+    The pro-p-part iis a free pro-p group of rank the $p$-rank of the Jacobian if $U = X$
+    (which, by definition, is $\dim_{\bF_p} \ker ([p] \colon A(k) \to A(k))$)
+    and of infinite rank equal to the cardinality of $k$ otherwise.
+  ref: >-
+    [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=142](4.9.1); for pro-p-part, see [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=143](4.9.4); ideas about the proof come in [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=196](5.7.13) (?)
+- 
+  # what can you say about hyperbolic curves over a finite field
+  question: >-
+    What can you say about hyperbolic curves over a finite field?
+  answer: >-
+    By a theorem by Tamagawa and Mochizuki,
+    the isomorphism between such curves are in bijection (via the natural map)
+    with the isomorphisms between the fundamental groups.
+  ref: >-
+    [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=146](4.9.8)
+-
+  # state the homotopy exact sequence
+  question: >-
+    State the homotopy exact sequence. What are the conditions on the scheme?
+  ref: >-
+    [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=182](5.6.1) in Szamuely
+-
+  # relative version of homotopy exact sequence
+  question: >-
+    What is a relative analogue to the homotopy exact sequence?
+  ref: >-
+    [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=183](5.6.4) in Szamuely
+-
+  # Stein factorisation
+  question: >-
+    State the Stein factorisation. Prove it.
+  answer: >-
+    Any proper morphism factors as a finite morphism followed by a morphism ``with
+    geometrically connected fibers'' (actually, a morphism with $\phi_* \cO_X = \cO_S$, which implies
+    geometrically connected fibers).
+  ref: >-
+    [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=184](5.6.5) in Szamuely
+-
+  # fundamental group of product
+  question: >-
+    When is the fundamental group of a product isomorphic to the product of the fundamental groups?
+  answer: >-
+    Need Noetherian schemes over an algebraically closed fieldm with one of them being proper and geometrically integral.
+  ref: >-
+    [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=184](5.6.6) in Szamuely
+-
+  # finite étale covers of abelian varieties
+  question: >-
+    What can you say about the finite étale cover of an abelian variety?
+  answer: >-
+    The cover can be given the structure of an abelian variety, such that the map is an isogeny.
+  ref: >-
+      [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=186](5.6.8)
+-
+  # fundamental group of abelian varieties
+  question: >-
+    What is the étale fundamental group of an abelian variety?
+  answer: >-
+    If you're over an algebraically closed field (otherwise, there is of course the arithmetic contribution),
+    it is commutative and isomorphic to the full Tate module (which is the product of all $T_\ell(A)$).
+  ref: >-
+    [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=188](5.6.10)
+-
+  # state the Lefschetz hyperplane theorem
+  question: >-
+    What does the Lefschetz hyperplane theorem say about étale fundamental groups?
+    What does it say in general?
+  answer: >-
+    For a scheme of dimension at least 3, ....? Need better reference first. 
+  ref: >-
+    [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=189](5.7.3); should be better references somewhere
+-
+  # Cebotarev density
+  question: State the Cebotarev density theorem.
+  answer: >-
+    Take a Galois cover $Y \to X$ (not sure why this is necessary)
+    and let $G$ be the Galois group.
+    Then every subset $C \subset G$ (note: subset, not even subgroup!) 
+    that is stable under conjugation contains
+    the image of some Frobenius element in $\pi_1(X,x)$ (and hence its entire conjugacy class).
+    A different (more general? only works for number fields?) statement can be found in [http://www.math.leidenuniv.nl/~hwl/papers/cheb.pdf](these notes) by Lenstra and Stevenhagen:
+    it says that for any Galois extension of a number field, with Galois group $G$,
+    and any conjugacy class $C \subset G$,
+    $\# C/\#G$ is the density of the primes that have a Frobenius element in $C$.
+  ref: >-
+     [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=207](5.8.18)
