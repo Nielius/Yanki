@@ -96,7 +96,7 @@ else:
 
 # |- Convert markdown string to with pandoc
 def convertMarkdownFn(x: str, targetft: str) -> str:
-  return pypandoc.convert_text(x, targetFiletype, format='md')
+  return pypandoc.convert_text(x, targetft, format='md')
 # As a one-liner: convertMarkdownFn = (lambda x: pypandoc.convert_text(x, targetFiletype, format='md'))
 
 
