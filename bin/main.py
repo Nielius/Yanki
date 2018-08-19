@@ -30,7 +30,7 @@ parser = argparse.ArgumentParser(description='''Script to apply a jinja2
 template to a yaml file describing a set of questions, possibly with answers
 and references.''')
 parser.add_argument('--template', '-t',
-                    required=True,
+                    required=False,
                     help="use given file as a jinja2 template file",
                     default='latex-template.tex')
 parser.add_argument('--input', '-i',
@@ -38,9 +38,12 @@ parser.add_argument('--input', '-i',
                     help='A YAML file that contains questions, refs, answers.',
                     default='perverse-sheaves.yml')
 parser.add_argument('--output', '-o',
-                    required=True,
+                    required=False,
                     help='the output .tex file',
-                    default='questions.tex')
+                    default='')
+parser.add_argument('--anki', '-a',
+                    help='save questions and answers to anki deck',
+                    action='store_true')
 parser.add_argument('--noconvert',
                     help='do not convert strings in yaml with pandoc; mostly for debugging purposes',
                     action='store_true')
@@ -52,13 +55,6 @@ args = parser.parse_args()
 inputfilename = args.input
 outputfilename = args.output
 
-# Get the target extension from the outputfilename.
-_, targetFiletype = os.path.splitext(outputfilename) # get the extension of # the outputfilename; # this is target file # type
-targetFiletype = targetFiletype[1:] # remove the dot at the beginning
-# sometimes the extension is not the same as the target name that pandoc uses; change in that case:
-if targetFiletype in filetypeConversion.keys():
-  targetFiletype = filetypeConversion[targetFiletype]
-
 
  
 # Jinja setup
@@ -69,7 +65,7 @@ if targetFiletype in filetypeConversion.keys():
 jinjaLatexEnv = jinja2.Environment(
     # this says that this jinja environment loads templates by looking for
     # files in the current directory
-    loader=jinja2.FileSystemLoader('../templates'),
+    loader=jinja2.FileSystemLoader(os.path.dirname(args.template)),
     # Change the default delimiters used by Jinja such that it won't pick up
     # brackets attached to LaTeX macros. Stolen from
     # http://tex.stackexchange.com/questions/40720/latex-in-industry
@@ -84,15 +80,11 @@ jinjaLatexEnv = jinja2.Environment(
 jinjaNormalEnv = jinja2.Environment(
     # this says that this jinja environment loads templates by looking for
     # files in the current directory
-    loader=jinja2.FileSystemLoader('../templates'),
+    loader=jinja2.FileSystemLoader(os.path.dirname(args.template)),
     # autoescape=jinja2.select_autoescape(
     #   disabled_extensions=('htm', 'html', 'xml'))
 )
 
-if targetFiletype == 'latex':
-  jinjaEnv = jinjaLatexEnv
-else:
-  jinjaEnv = jinjaNormalEnv
 
 
 # |- Convert markdown string to some target file type with pandoc
@@ -100,23 +92,16 @@ def convertMarkdownFn(x: str, targetft: str) -> str:
   return pypandoc.convert_text(x, targetft, format='md')
 # As a one-liner: convertMarkdownFn = (lambda x: pypandoc.convert_text(x, targetFiletype, format='md'))
 
-
-
-# | - Main procedure: open yaml, convert and apply jinja template
-with open(inputfilename) as inputfile, \
-     open(outputfilename, 'w') as outputfile:
-  qs = yaml.load(inputfile) # the questions; should return a generator
-                                # (sort of list?) of dictionaries
-
-
-  # Convert all the strings from markdown to the right target.
-  # | - The converted questions (i.e., convert the strings in the yaml document
-  # | - with pandoc to the targetFiletype)
+def convertAllQuestions(qs, targetft):
+  "Convert all strings in the yaml doc qs from markdown to targetft."
+  # Depends on the following global variables, that correspond to command line options.
+  # - args.noconvert
+  # - args.saveconverted
   if args.noconvert: # this is a command-line option that disables converting
     qsconv = qs
   else:
     qsconv = map(
-      (lambda x : {k: (convertMarkdownFn(v, targetFiletype) if isinstance(v, str) else v)
+      (lambda x : {k: (convertMarkdownFn(v, targetft) if isinstance(v, str) else v)
                    for k, v in x.items()} ),
       qs) # the converted questions
 
@@ -125,7 +110,53 @@ with open(inputfilename) as inputfile, \
     with open(args.saveconverted, "w") as convertedoutfile:
       convertedoutfile.write(yaml.dump([x for x in qsconv]))
 
+  return qsconv
 
-  # Apply the jinja template.
-  jinjatemplate = jinjaEnv.get_template(args.template)
-  outputfile.write(jinjatemplate.render(exclist=qsconv))
+
+# | - Main procedure: open yaml, convert and apply jinja template
+with open(inputfilename) as inputfile:
+  qs = yaml.load(inputfile) # the questions; should return a generator
+                                # (sort of list?) of dictionaries
+
+  # OPTION 1: Apply Jinja2 template
+  if outputfilename: # if an outputfilename was given as an option: convert, apply template and save
+    with open(outputfilename, 'w') as outputfile:
+
+      # Get the target extension from the outputfilename.
+      _, targetFiletype = os.path.splitext(outputfilename) # get the extension of # the outputfilename; # this is target file # type
+      targetFiletype = targetFiletype[1:] # remove the dot at the beginning
+      # sometimes the extension is not the same as the target name that pandoc uses; change in that case:
+      if targetFiletype in filetypeConversion.keys():
+        targetFiletype = filetypeConversion[targetFiletype]
+
+      qsconv = convertAllQuestions(qs, targetFiletype)
+
+      if targetFiletype == 'latex':
+        jinjaEnv = jinjaLatexEnv
+      else:
+        jinjaEnv = jinjaNormalEnv
+
+      # Apply the jinja template.
+      jinjatemplate = jinjaEnv.get_template(os.path.basename(args.template))
+      outputfile.write(jinjatemplate.render(exclist=qsconv))
+
+# OPTION 2: Save files to anki
+if args.anki:
+  import sys
+  sys.path.append("/home/niels/proj/anki") # this should probably not really be part of the code
+  from anki.storage import Collection
+  profileHome = "/home/niels/.local/share/Anki2/Tmpuser"
+  collectionPath = os.path.join(profileHome, 'collection.anki2')
+  col = Collection(collectionPath, log=True)
+  col.conf['curModel'] = 1 # this is just the basic model with only a question and an answer
+
+  qsconv = convertAllQuestions(qs, 'html')
+
+  # Now add all the questions as notes
+  for q in qsconv:
+    note = col.newNote()
+    note.fields[0] = q.get('question', '') # the second is the default value if key 'question' doesn't exist
+    note.fields[1] = q.get('answer', '') # i.d.
+    col.addNote(note)
+
+  col.save()

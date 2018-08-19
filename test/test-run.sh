@@ -1,28 +1,31 @@
 #!/bin/bash
 
-# For pdf:
+cd "$(dirname "$0")" # makes sure this script is running in the right directory
+
+main="../bin/main.py"
 
 case "$1" in
     "pdf")
-        python3 new-md.py -i ../tests/etale-fundamental-groups-md.yaml -o testrun-output.tex -t latex-template.tex
+        python3 ${main} -i ../questionsets/etale-fundamental-groups-md.yaml -o test-output/testrun-output.tex -t ../templates/latex-template.tex
         pdflatex -interaction=batchmode testrun-output.tex
-        okular testrun-output.pdf
+        okular test-output/testrun-output.pdf
         ;;
     "html")
-        python3 new-md.py -i ../tests/etale-fundamental-groups-md.yaml -o testrun-output.html -t answer-template.html
-        firefox testrun-output.html
+        python3 ${main} -i ../questionsets/etale-fundamental-groups-md.yaml -o test-output/testrun-output.html -t ../templates/answer-template.html
+        firefox test-output/testrun-output.html
         ;;
     "html-new")
-        python3 new-md.py -i ../tests/etale-fundamental-groups-md.yaml -o testrun-new-output.html -t answer-clickable.html
-        firefox testrun-new-output.html
+        python3 ${main} -i ../questionsets/etale-fundamental-groups-md.yaml -o test-output/testrun-new-output.html -t ../templates/answer-clickable.html
+        firefox test-output/testrun-new-output.html
         ;;
     "html-new-noconvert")
-        python3 new-md.py -i ../tests/etale-fundamental-groups-html.yaml -o testrun-new-output.html -t answer-clickable.html --noconvert
-        firefox testrun-new-output.html
+        python3 ${main} -i ../questionsets/etale-fundamental-groups-html.yaml -o test-output/testrun-new-output.html -t ../templates/answer-clickable.html --noconvert
+        firefox test-output/testrun-new-output.html
+        ;;
+    "anki")
+        python3 ${main} -i ../questionsets/etale-fundamental-groups-md.yaml --anki
         ;;
     *)
         echo "Specifiy 'html' or 'pdf'."
         ;;
 esac
-
-
