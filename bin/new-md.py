@@ -19,6 +19,7 @@ import pypandoc
 
 # Global constants
 
+# Map a file extension to the corresponding pandoc filetype.
 filetypeConversion = {
   'tex': 'latex'
 }
@@ -94,7 +95,7 @@ else:
   jinjaEnv = jinjaNormalEnv
 
 
-# |- Convert markdown string to with pandoc
+# |- Convert markdown string to some target file type with pandoc
 def convertMarkdownFn(x: str, targetft: str) -> str:
   return pypandoc.convert_text(x, targetft, format='md')
 # As a one-liner: convertMarkdownFn = (lambda x: pypandoc.convert_text(x, targetFiletype, format='md'))
@@ -111,7 +112,7 @@ with open(inputfilename) as inputfile, \
   # Convert all the strings from markdown to the right target.
   # | - The converted questions (i.e., convert the strings in the yaml document
   # | - with pandoc to the targetFiletype)
-  if args.noconvert: # this is a command-line option
+  if args.noconvert: # this is a command-line option that disables converting
     qsconv = qs
   else:
     qsconv = map(
@@ -119,7 +120,7 @@ with open(inputfilename) as inputfile, \
                    for k, v in x.items()} ),
       qs) # the converted questions
 
-  # Save the converted strings if that option
+  # Save the converted strings if that option is given
   if args.saveconverted:
     with open(args.saveconverted, "w") as convertedoutfile:
       convertedoutfile.write(yaml.dump([x for x in qsconv]))
