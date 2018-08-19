@@ -1,37 +1,6 @@
-# Wat voor data structure willen we eigenlijk?
-# Elk element is een lijst van vragen en antwoorden?
-# Een antwoord kan natuurlijk ook een lijst zijn.
-# Misschien een voorbeeld:
+# This file still uses the old format for question files.
+# It does not work with the new version of this program.
 
-
-
-# CURRENT SYNTAX:
-# ---
-# EXERCISE = {QUESTION, ANSWER, REF}
-# QUESTION = STR | LIST OF EXERCISES
-#
-# Here answer, ref are strings.
-# Maybe we'll demand a question, but not an answer or reference? 
-
-
-# alternatives:
-# Misschien is dit de syntax?
-# BLOCK = QUESTION | (LIST OF QUESTIONS)
-# QUESTION = mapping {question: 'q', answer: 'a', ref: 'ref'}
-#
-# Maybe a block can additionally have a reference?
-
-# Of dit:
-# EXERCISE = {QUESTION, ANSWER, REF} | LIST OF EXERCISES
-#
-# Here question, answer, ref are strings.
-# Maybe we'll demand a question, but not an answer or reference? 
-# This has the disadvantage that an exercise cannot be a list of exercises together with an
-# answer or reference for this entire list.
-
-# PROBLEMS
-# ---
-# - Are the answers org-strings or latex strings? or markdown?
 
 # Zie ook, voor meer opgaven:
 # - [[pdfview:/home/niels/md/perverse-sheaves/Williamson,%20Illustrated%20guide%20to%20perverse%20sheaves,%20exc.pdf::1][exercises]] van Geordie Williamson

@@ -1,0 +1,136 @@
+# This file has been automatically generated to speed up the debugging process.
+# (This is an intermediate file.)
+# It is better to edit etale-fundamental-groups-md.yaml.
+- {answer: "<p>Every finite morphism that induces an isomorphism on the function fields,\
+    \ is in fact an isomorphism. (Isn\u2019t finiteness automatic? Probably not.)\
+    \ In other words, it is the largest finite extension with the same fraction field.\
+    \ This can again be rephrased as: if a finite morphism is an isomorphism on an\
+    \ open subset, then it is an isomorphism.</p>\n", question: '<p>Classify the normal
+    integral affine curves among the integral affine curves in terms of the function
+    field, and in terms of open subsets.</p>
+
+    ', ref: '<p><a href="Szamuely,%204.3.12">/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=118</a></p>
+
+    '}
+- {answer: "<p>It is the same as the profinite completion of the Riemann surface associated\
+    \ to <span class=\"math inline\"><em>U</em></span>. That means that a presentation\
+    \ is given by the loops coming from the genus (2 for each hole, <span class=\"\
+    math inline\"><em>a</em><sub><em>i</em></sub></span> and <span class=\"math inline\"\
+    ><em>b</em><sub><em>i</em></sub></span>) and one loop for every missing point,\
+    \ with the relation <span class=\"math inline\">[<em>a</em><sub>1</sub>,\u2006\
+    <em>b</em><sub>1</sub>]\u22EF[<em>a</em><sub><em>g</em></sub>,\u2006<em>b</em><sub><em>g</em></sub>]<em>\u03B3\
+    </em><sub>1</sub>\u22EF<em>\u03B3</em><sub><em>n</em></sub>\u2004=\u20041</span>.</p>\n",
+  question: "<p>Let <span class=\"math inline\"><em>U</em>\u2004\u2282\u2004<em>C</em></span>\
+    \ be an open in an integral proper normal curve <span class=\"math inline\"><em>C</em></span>\
+    \ over <span class=\"math inline\">$\\bC$</span> with the complement consisting\
+    \ of <span class=\"math inline\"><em>n</em></span> points. Give a presentation\
+    \ of <span class=\"math inline\"><em>\u03C0</em><sub>1</sub><sup><em>e</em><em>t</em></sup>(<em>U</em>)</span>.</p>\n",
+  ref: '<p><a href="4.6.7">/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=130</a>
+    in Szamuely</p>
+
+    '}
+- {ref: '<p><a href="4.6.12">/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=131</a></p>
+
+    '}
+- {answer: "<p>The profinite prime-to-p completion is exactly the same as over <span\
+    \ class=\"math inline\">$\\bC$</span> (see previous question). The pro-p-part\
+    \ iis a free pro-p group of rank the <span class=\"math inline\"><em>p</em></span>-rank\
+    \ of the Jacobian if <span class=\"math inline\"><em>U</em>\u2004=\u2004<em>X</em></span>\
+    \ (which, by definition, is <span class=\"math inline\">$\\dim_{\\bF_p} \\ker\
+    \ ([p] \\colon A(k) \\to A(k))$</span>) and of infinite rank equal to the cardinality\
+    \ of <span class=\"math inline\"><em>k</em></span> otherwise.</p>\n", question: "<p>Let\
+    \ <span class=\"math inline\"><em>X</em></span> be a integral normal proper curve\
+    \ over an algebraically closed field of characteristic <span class=\"math inline\"\
+    ><em>p</em>\u2004\u2265\u20040</span> of genus <span class=\"math inline\"><em>g</em></span>\
+    \ and let <span class=\"math inline\"><em>U</em>\u2004\u2282\u2004<em>X</em></span>\
+    \ be an open subset (complement of <span class=\"math inline\"><em>n</em></span>\
+    \ points). What is the prime-to-p completion of <span class=\"math inline\"><em>\u03C0\
+    </em><sub>1</sub>(<em>U</em>)</span>? If <span class=\"math inline\">$\\char k\
+    \ &gt; 0$</span>, what is its pro-p-part?</p>\n", ref: '<p><a href="4.9.1">/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=142</a>;
+    for pro-p-part, see <a href="4.9.4">/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=143</a>;
+    ideas about the proof come in <a href="5.7.13">/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=196</a>
+    (?)</p>
+
+    '}
+- {answer: '<p>By a theorem by Tamagawa and Mochizuki, the isomorphism between such
+    curves are in bijection (via the natural map) with the isomorphisms between the
+    fundamental groups.</p>
+
+    ', question: '<p>What can you say about hyperbolic curves over a finite field?</p>
+
+    ', ref: '<p><a href="4.9.8">/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=146</a></p>
+
+    '}
+- {question: '<p>State the homotopy exact sequence. What are the conditions on the
+    scheme?</p>
+
+    ', ref: '<p><a href="5.6.1">/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=182</a>
+    in Szamuely</p>
+
+    '}
+- {question: '<p>What is a relative analogue to the homotopy exact sequence?</p>
+
+    ', ref: '<p><a href="5.6.4">/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=183</a>
+    in Szamuely</p>
+
+    '}
+- {answer: "<p>Any proper morphism factors as a finite morphism followed by a morphism\
+    \ ``with geometrically connected fibers\u2019\u2019 (actually, a morphism with\
+    \ <span class=\"math inline\">$\\phi_* \\cO_X = \\cO_S$</span>, which implies\
+    \ geometrically connected fibers).</p>\n", question: '<p>State the Stein factorisation.
+    Prove it.</p>
+
+    ', ref: '<p><a href="5.6.5">/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=184</a>
+    in Szamuely</p>
+
+    '}
+- {answer: '<p>Need Noetherian schemes over an algebraically closed fieldm with one
+    of them being proper and geometrically integral.</p>
+
+    ', question: '<p>When is the fundamental group of a product isomorphic to the
+    product of the fundamental groups?</p>
+
+    ', ref: '<p><a href="5.6.6">/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=184</a>
+    in Szamuely</p>
+
+    '}
+- {answer: '<p>The cover can be given the structure of an abelian variety, such that
+    the map is an isogeny.</p>
+
+    ', question: "<p>What can you say about the finite \xE9tale cover of an abelian\
+    \ variety?</p>\n", ref: '<p><a href="5.6.8">/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=186</a></p>
+
+    '}
+- {answer: "<p>If you\u2019re over an algebraically closed field (otherwise, there\
+    \ is of course the arithmetic contribution), it is commutative and isomorphic\
+    \ to the full Tate module (which is the product of all <span class=\"math inline\"\
+    ><em>T</em><sub>\u2113</sub>(<em>A</em>)</span>).</p>\n", question: "<p>What is\
+    \ the \xE9tale fundamental group of an abelian variety?</p>\n", ref: '<p><a href="5.6.10">/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=188</a></p>
+
+    '}
+- {answer: "<p>For a scheme of dimension at least 3, \u2026.? Need better reference\
+    \ first.</p>\n", question: "<p>What does the Lefschetz hyperplane theorem say\
+    \ about \xE9tale fundamental groups? What does it say in general?</p>\n", ref: '<p><a
+    href="5.7.3">/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=189</a>;
+    should be better references somewhere</p>
+
+    '}
+- {answer: "<p>Take a Galois cover <span class=\"math inline\"><em>Y</em>\u2004\u2192\
+    \u2004<em>X</em></span> (not sure why this is necessary) and let <span class=\"\
+    math inline\"><em>G</em></span> be the Galois group. Then every subset <span class=\"\
+    math inline\"><em>C</em>\u2004\u2282\u2004<em>G</em></span> (note: subset, not\
+    \ even subgroup!) that is stable under conjugation contains the image of some\
+    \ Frobenius element in <span class=\"math inline\"><em>\u03C0</em><sub>1</sub>(<em>X</em>,\u2006\
+    <em>x</em>)</span> (and hence its entire conjugacy class). A different (more general?\
+    \ only works for number fields?) statement can be found in <a href=\"these%20notes\"\
+    >http://www.math.leidenuniv.nl/~hwl/papers/cheb.pdf</a> by Lenstra and Stevenhagen:\
+    \ it says that for any Galois extension of a number field, with Galois group <span\
+    \ class=\"math inline\"><em>G</em></span>, and any conjugacy class <span class=\"\
+    math inline\"><em>C</em>\u2004\u2282\u2004<em>G</em></span>, <span class=\"math\
+    \ inline\">#<em>C</em>/#<em>G</em></span> is the density of the primes that have\
+    \ a Frobenius element in <span class=\"math inline\"><em>C</em></span>.</p>\n",
+  question: '<p>State the Cebotarev density theorem.</p>
+
+    ', ref: '<p><a href="5.8.18">/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=207</a></p>
+
+    '}

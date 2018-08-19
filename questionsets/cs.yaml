@@ -1,0 +1,28 @@
+-
+  question: >-
+    Classify the normal integral affine curves among the integral affine curves
+    in terms of the function field, and in terms of open subsets.
+  answer: >-
+    Every finite morphism that induces an isomorphism on the function fields, is in fact an isomorphism.
+    (Isn't finiteness automatic? Probably not.)
+    In other words, it is the largest finite extension with the same fraction field.
+    This can again be rephrased as: if a finite morphism is an isomorphism on an open subset,
+    then it is an isomorphism.
+  ref: >-
+      [/home/niels/md/Szamuely,%20Tamas,%20Galois_Groups_and_Fundamental_Gro(BookFi.org).pdf#page=118](Szamuely, 4.3.12)
+- 
+  question: >-
+    What is the difference between dynamical and lexical scoping?
+    Give the definitions, compare and give an example where you notice the difference between the two.
+  answer: >-
+    Dynamical scoping means that the run-time state of the program (i.e., where in the program is this code run?
+    (what does the stack look like, which function called it, ...)) determines what a variable refers to.
+    Lexical scoping means that the structure of the code determines what a variable refers to.
+
+    You can see the difference when a function g calls a function f that refers to some global variable:
+    in lexical scope, the variables in f refer to what you would think of you just looked at the source code,
+    but in dynamic scope, if g redefines the variable, this new definition holds in f.
+  ref: >-
+    [https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scope_vs._dynamic_scope](Wikipedia);
+    including the [example](https://en.wikipedia.org/wiki/Scope_(computer_science)#Lexical_scoping_vs._dynamic_scoping)
+      
