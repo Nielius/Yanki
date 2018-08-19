@@ -19,6 +19,7 @@ import argparse
 import yaml
 import jinja2
 from orgConverter import orgConvert
+import os.path
 # import IPython # for debugging purposes
 
 parser = argparse.ArgumentParser(description='''Script to apply a jinja2 template to a yaml file
@@ -76,29 +77,6 @@ def dictlistmap(fun, dic):
       dic[k] = fun(v)
   return dic
 
-def b64decodestring (s):
-    """I only created this function because b64decode and b64encode require bytes,
-not strings."""
-    return bytes.decode(base64.b64decode(str.encode(s)))
-
-def b64encodestring (s):
-    """I only created this function because b64decode and b64encode require bytes,
-not strings."""
-    return bytes.decode(base64.b64encode(str.encode(s)))
-
-def orgToLatex(s):
-    """Convert an org string to LaTeX. For this to work, an emacs-snapshot has to
-be running."""
-    # should work, except that the function names are of course wrong; might
-    # also need to trim the quotes from the returned string; or use princ in
-    # the emacs command?
-    emacsoutput = subprocess.check_output("emacsclient-snapshot -e '(base64-encode-string (org-export-string-as (base64-decode-string \"{}\") '\"'\"'latex t) t)'".format(b64encodestring(s)), shell=True) # de gekke '\"'\"' is om bash een ' door te laten geven aan emacs
-    # Note: the t in emacs's base64-encode-string ensures that there are no newlines in the output.
-
-    # now we need to format the output (which is a bytetype object of a b64 string plus newlines and quotes) and decode it
-    return b64decodestring(bytes.decode(emacsoutput).strip().strip('"'))
-
-
 # THE ACTUAL WORK
 # -----------
 with open(inputfilename) as inputfile, \
@@ -108,7 +86,9 @@ with open(inputfilename) as inputfile, \
     # IPython.embed() # for debugging purposes
 
     # Convert all the org strings to latex strings
-    qsconv = map((lambda x: dictlistmap(orgToLatex, x)), qs)
+    _, targetFiletype = os.path.splitext(outputfilename)
+    orgConvertFn = (lambda x: orgConvert(x, targetFiletype))
+    qsconv = map((lambda x: dictlistmap(orgConvertFn, x)), qs)
 
     jinjatemplate = jinjaEnv.get_template(args.template)
     outputfile.write(jinjatemplate.render(exclist=qsconv))
