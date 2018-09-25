@@ -5,17 +5,33 @@
 #
 # Inner working:
 # Load yaml file; apply pandoc to all strings in loaded file; apply jinja2 template.
+
+
+# To include into a unit test (?):
+# - if outputfilename is not given, choose reasonable standard
+# - list templates in directories
+# - does config file work as it is supposed to? does it indeed find one of the templates?
+
+# TODO: does the saving the anki work properly? does the yaml file then contain references to the ids?
+
+# TODO: option to list all available templates (use the function listTemplates)
+# TODO: do not require the '-i' flag for the input file. (Just the positional argument.)
+
+
 
 # Imports
 import argparse
 import os.path
+import sys
 
-import yaml
+import ruamel.yaml # see https://stackoverflow.com/questions/67631/how-to-import-a-module-given-the-full-path if path incorrect
+yaml = ruamel.yaml.YAML()
 import jinja2
 
 import pypandoc
 # import IPython # for debugging purposes
 
+from qmutils import *
 
 # Global constants
 
@@ -31,29 +47,90 @@ template to a yaml file describing a set of questions, possibly with answers
 and references.''')
 parser.add_argument('--template', '-t',
                     required=False,
-                    help="use given file as a jinja2 template file",
-                    default='latex-template.tex')
+                    help="use given file as a jinja2 template file; looks in different directories",
+                    default=False)
 parser.add_argument('--input', '-i',
                     required=True,
                     help='A YAML file that contains questions, refs, answers.',
                     default='perverse-sheaves.yml')
 parser.add_argument('--output', '-o',
                     required=False,
-                    help='the output .tex file',
+                    help='the output  file',
                     default='')
 parser.add_argument('--anki', '-a',
                     help='save questions and answers to anki deck',
                     action='store_true')
 parser.add_argument('--noconvert',
-                    help='do not convert strings in yaml with pandoc; mostly for debugging purposes',
+                    help='do not convert strings in yaml with pandoc; mostly for debugging purposes; useful in combination with the output from \'--saveconverted\'',
                     action='store_true')
 parser.add_argument('--saveconverted',
-                    help='save the pandoc-converted yaml to file',
+                    help='save the pandoc-converted yaml to this file',
                     default=False)
+parser.add_argument('--debug',
+                    help='display debugging information',
+                    action='store_true')
 args = parser.parse_args()
 
+templateDirs = [""] # where to look for templates
+standardTemplate = os.path.expanduser("~/proj/questionmaker/templates/answer-clickable.html") # can be overridden by config file
+
+
+# Read config file
+configFiles = [os.path.expanduser("~/.questionmaker.yaml")]
+
+
+try:
+  configFilename = next(f for f in configFiles if os.path.isfile(f))
+  with open(configFilename, 'r') as configFile:
+    cfg = yaml.load(configFile)
+    templateDirs.append(os.path.expanduser(cfg['templateDir']))
+    standardTemplate = os.path.expanduser(cfg['standardTemplate'])
+except StopIteration:
+  print("No config file found.")
+except:
+  print("Unexpected error:", sys.exc_info()[0])
+  raise
+
+
 inputfilename = args.input
-outputfilename = args.output
+if args.output == '':
+  _, ext = os.path.splitext(standardTemplate)
+  outputfilename = updatedFilename(inputfilename + '.out' + ext)
+else:
+  outputfilename = args.output
+
+
+# Get filename for the template
+# 1. From args
+# 2. From default in configuration file
+# 3. From global default.
+if args.template:
+  templateFilename = args.template
+else:
+  templateFilename = standardTemplate
+
+# Then: look for that file in the template directories
+try:
+  expandedTemplateFilenames = ( os.path.expanduser(d + templateFilename) for d in templateDirs )
+  templateFilename = next(f for f in expandedTemplateFilenames if os.path.isfile(f))
+except StopIteration:
+  print("No template file found.")
+
+
+if args.debug:
+  print("Using the following options:")
+  for name, value in globals().copy().items():
+    print(name, value)
+
+
+
+
+def listTemplates():
+  for templatepath in templateDirs:
+    print("--- In {}:".format(templatepath))
+    print('\n'.join([f for f in os.listdir(templatepath) if os.path.isfile(os.path.join(templatepath, f))]))
+    print('\n')
+
 
 
  
@@ -65,7 +142,7 @@ outputfilename = args.output
 jinjaLatexEnv = jinja2.Environment(
     # this says that this jinja environment loads templates by looking for
     # files in the current directory
-    loader=jinja2.FileSystemLoader(os.path.dirname(args.template)),
+    loader=jinja2.FileSystemLoader(os.path.dirname(templateFilename)),
     # Change the default delimiters used by Jinja such that it won't pick up
     # brackets attached to LaTeX macros. Stolen from
     # http://tex.stackexchange.com/questions/40720/latex-in-industry
@@ -80,7 +157,7 @@ jinjaLatexEnv = jinja2.Environment(
 jinjaNormalEnv = jinja2.Environment(
     # this says that this jinja environment loads templates by looking for
     # files in the current directory
-    loader=jinja2.FileSystemLoader(os.path.dirname(args.template)),
+    loader=jinja2.FileSystemLoader(os.path.dirname(templateFilename)),
     # autoescape=jinja2.select_autoescape(
     #   disabled_extensions=('htm', 'html', 'xml'))
 )
@@ -140,7 +217,7 @@ with open(inputfilename) as inputfile:
         jinjaEnv = jinjaNormalEnv
 
       # Apply the jinja template.
-      jinjatemplate = jinjaEnv.get_template(os.path.basename(args.template))
+      jinjatemplate = jinjaEnv.get_template(os.path.basename(templateFilename))
       outputfile.write(jinjatemplate.render(exclist=qsconv))
 
 # OPTION 2: Save files to anki
