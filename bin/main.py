@@ -92,6 +92,12 @@ def convertMarkdownFn(x: str, targetft: str) -> str:
   return pypandoc.convert_text(x, targetft, format='md')
 # As a one-liner: convertMarkdownFn = (lambda x: pypandoc.convert_text(x, targetFiletype, format='md'))
 
+def convertQuestion(q, targetft):
+  """Convert the fields of a question (a dictionary with lots of fields) to the target file type targetft using pandoc.
+  Essentially, this is  just some kind of mapcar over a dictionary."""
+  return {k: (convertMarkdownFn(v, targetft) if isinstance(v, str) else v) for k, v in q.items()}
+
+
 def convertAllQuestions(qs, targetft):
   "Convert all strings in the yaml doc qs from markdown to targetft."
   # Depends on the following global variables, that correspond to command line options.
@@ -100,10 +106,7 @@ def convertAllQuestions(qs, targetft):
   if args.noconvert: # this is a command-line option that disables converting
     qsconv = qs
   else:
-    qsconv = map(
-      (lambda x : {k: (convertMarkdownFn(v, targetft) if isinstance(v, str) else v)
-                   for k, v in x.items()} ),
-      qs) # the converted questions
+    qsconv = map((lambda x : convertQuestion(x, targetft)), qs) # the converted questions
 
   # Save the converted strings if that option is given
   if args.saveconverted:
