@@ -180,6 +180,7 @@ def convertAllQuestions(qs, targetft):
   # Depends on the following global variables, that correspond to command line options.
   # - args.noconvert
   # - args.saveconverted
+  # (Is this the right place for these options?)
   if args.noconvert: # this is a command-line option that disables converting
     qsconv = qs
   else:
@@ -228,15 +229,20 @@ if args.anki:
   profileHome = "/home/niels/.local/share/Anki2/Tmpuser"
   collectionPath = os.path.join(profileHome, 'collection.anki2')
   col = Collection(collectionPath, log=True)
-  col.conf['curModel'] = 1 # this is just the basic model with only a question and an answer
-
-  qsconv = convertAllQuestions(qs, 'html')
+  col.conf['curModel'] =  col.models.byName('Basic')['id'] # this is just the basic model with only a question and an answer
 
   # Now add all the questions as notes
-  for q in qsconv:
+  for i, q in enumerate(qs):
+    qconv = convertQuestion(q, targetFiletype)
+
     note = col.newNote()
-    note.fields[0] = q.get('question', '') # the second is the default value if key 'question' doesn't exist
-    note.fields[1] = q.get('answer', '') # i.d.
+    note.fields[0] = qconv.get('question', '') # the second is the default value if key 'question' doesn't exist
+    note.fields[1] = qconv.get('answer', '') # i.d.
+    qs[i]['guidb32'] = b32encode(note.guid.encode('ASCII')).decode('ASCII')
     col.addNote(note)
 
   col.save()
+
+  # write new yaml document
+  newyamlout = open(updatedFilename(inputfilename), 'w')
+  yaml.dump(qs, newyamlout)
