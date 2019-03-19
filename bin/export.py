@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # File: new-md.py
 #
 # Description:
@@ -73,8 +74,8 @@ def getOutputfileFromOptions(options):
   if ('output' in options) and ('filetype' in options):
     return options['output'], options['filetype']
   if options.get('output', '') != '': # i.e., exists and is not ''
-    _, ext = os.path.splitext(standardTemplate)
-    return options['output'], ext
+    _, ext = os.path.splitext(options['output'])
+    return options['output'], ext[1:]
   if options.get('filetype', '') != '':
     outputfilename = updatedFilename(inputfilename + '.out.' + options['filetype'])
     return outputfilename, options['filetype']
