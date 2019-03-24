@@ -1,0 +1,62 @@
+# quickconvert.py
+#
+# The purpose of this code is to generate YAML files for my yanki application
+# from files that have a very easy format, described below.
+#
+# Format of the input:
+#
+# - all exercises are separated by a newline
+# - the first line of an exercises is the question; the other lines form the answer
+# - newlines inside markdown code blocks are not interpreted as separators of exercises;
+#   all other newlines are.
+
+
+from ruamel.yaml import YAML
+import sys
+
+yaml = YAML()
+
+if len(sys.argv) > 1:
+    fn = sys.argv[1]
+else:
+    fn = 'input.md'
+f = open(fn)
+
+
+
+# More imperative style
+
+qs = []
+q = {}
+busy = 0 # tracks whether we were busy reading a question
+firstline = 1 # tracks whether this is the first line of a question
+incodeblock = 0 # tracks whether we are in a code block, where spaces are allowed
+for l in f.readlines():
+    if l == '\n':
+        # New line: if we were considering a question, this finishes the
+        # question. Otherwise, just ignore.
+        if busy == 1 and incodeblock == 0:
+            if 'answer' in q:
+                q['answer'] = q['answer'].strip()
+            qs.append(q)
+            q = {}
+            busy = 0
+            firstline = 1
+        if incodeblock == 1:
+            q['answer'] = q.get('answer', '') + '\n'
+    else:
+        if firstline == 1:
+            q['question'] = l.strip()
+            firstline = 0
+            busy = 1
+        else:
+            q['answer'] = q.get('answer', '') + l
+            if l.startswith('```'):
+                incodeblock = (incodeblock + 1) % 2
+
+if busy == 1:
+    q['answer'] = q['answer'].strip()
+    qs.append(q)
+
+
+yaml.dump(qs, sys.stdout)
