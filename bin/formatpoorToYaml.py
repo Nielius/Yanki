@@ -26,7 +26,10 @@ f = open(fn)
 
 # More imperative style
 
-qs = []
+# The first element of the list should be some metadata:
+qs = [{'metadata': True, # if this field is present, it is not a question; should be the first dict
+       'collection': '/home/niels/.local/share/Anki2/Tmpuser/collection.anki2',
+       'deck': os.path.basename(os.path.splitext(fn)[0])}]
 q = {}
 busy = 0 # tracks whether we were busy reading a question
 firstline = 1 # tracks whether this is the first line of a question
