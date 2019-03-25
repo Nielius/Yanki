@@ -66,9 +66,9 @@ class AnkiCollection():
   def currentDeck(self):
     return self.collection.decks.current()
 
-  def createOrReturnDeckId(self, name, create=True, type=defaultDeck):
+  def createOrReturnDeckId(self, name, create=True):
     "Add a deck with NAME. Reuse deck if already exists. Return id as int."
-    return self.collection.decks.id(name, create, type)
+    return self.collection.decks.id(name, create)
 
 
   def selectModelById(self, mid):
@@ -202,6 +202,3 @@ if __name__ == "__main__":
 
 
   mcol.addModel('Yanki default', ['test'], [], failSilently=False)
-
-
-
