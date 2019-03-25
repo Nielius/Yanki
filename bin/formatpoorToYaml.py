@@ -12,9 +12,21 @@
 
 
 from ruamel.yaml import YAML
+import ruamel
 import sys
+import os.path
 
 yaml = YAML()
+yaml.block_indent = 4
+yaml.indent = 4
+
+# These next two lines allow us to specify that certain strings need to be
+# represented using blocks in yaml. Code taken from
+# https://stackoverflow.com/questions/6432605/any-yaml-libraries-in-python-that-support-dumping-of-long-strings-as-block-liter
+folded = ruamel.yaml.scalarstring.FoldedScalarString
+literal = ruamel.yaml.scalarstring.LiteralScalarString
+
+
 
 if len(sys.argv) > 1:
     fn = sys.argv[1]
@@ -38,9 +50,9 @@ for l in f.readlines():
     if l == '\n':
         # New line: if we were considering a question, this finishes the
         # question. Otherwise, just ignore.
-        if busy == 1 and incodeblock == 0:
+        if busy == 1 and incodeblock == 0: # this is the end of an answer
             if 'answer' in q:
-                q['answer'] = q['answer'].strip()
+                q['answer'] = literal(q['answer'].strip())
             qs.append(q)
             q = {}
             busy = 0
@@ -49,7 +61,7 @@ for l in f.readlines():
             q['answer'] = q.get('answer', '') + '\n'
     else:
         if firstline == 1:
-            q['question'] = l.strip()
+            q['question'] = literal(l.strip())
             firstline = 0
             busy = 1
         else:
@@ -58,8 +70,9 @@ for l in f.readlines():
                 incodeblock = (incodeblock + 1) % 2
 
 if busy == 1:
-    q['answer'] = q['answer'].strip()
+    q['answer'] = literal(q['answer'].strip())
     qs.append(q)
 
 
 yaml.dump(qs, sys.stdout)
+# or maybe yaml.round_trip_dump()?
