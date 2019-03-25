@@ -53,13 +53,9 @@ def listTemplates():
 
 
 
-
-
-
-
-
 def getOutputfileFromOptions(options):
   """Get a sensible default output filename and output filetype.
+  At the moment, we do not use this function.
 
   If both filename and filetype are given,
   there is nothing to do.
@@ -82,18 +78,35 @@ def getOutputfileFromOptions(options):
   else:
     return updatedFilename(options['input'] + '.out.html'), 'html'
 
+def getOutputfileFormat(outfile, templateFilename):
+  """Deduce the output filetype from the outputfile or filename of the template.
+  Tries to use the extension of the outfile first;
+  then considers the templateFilename (for example if std.out is the output).
+  """
+  # First attempt
+  res = os.path.splitext(outfile.name)[1][1:]
+  if res != '':
+    return res
 
-def getTemplateFromOptions(options):
+  # Second attempt
+  res = os.path.splitext(templateFilename)[1][1:]
+  if res != '':
+    return res
+
+  raise NameError('Cannot find appropriate output filetype!')
+
+
+
+def getTemplateFromOptions(templateFilename, templateDirs):
   """Use the options to find the template file.
   If a complete path to a template file is given, use it.
   Otherwise, search for the file in all template directories."""
-  if not 'template' in options:
-    raise NameError('No template given.')
 
-  tf = options['template']
+  if templateFilename is None:
+    raise ValueError('No template filename given!')
 
-  for dir in ['./'] + list(options.get('templatedirs', [])):
-    res = os.path.expanduser(os.path.join(dir, tf))
+  for dir in [''] + templateDirs:
+    res = os.path.expanduser(os.path.join(dir, templateFilename))
     if os.path.isfile(res):
       return res
 
@@ -250,3 +263,151 @@ if __name__ == "__main__":
     jinjatemplate = jinjaEnv.get_template(os.path.basename(templateFilename))
     with open(outputfilename, 'w') as outputfile:
       outputfile.write(jinjatemplate.render(exclist=qs))
+
+
+
+
+def jinjaExport(exclist, templateFilename, outfile, targetFiletype=None):
+  """Export the exclist according to the jinja template stored in templateFilename.
+  Save the result in outfile (a stream).
+
+  If target filetype is not given, deduce it from templateFilename.
+  """
+  if targetFiletype == None:
+    targetFiletype = os.path.splitext(templateFilename)[1][1:]
+
+  # Export with Jinja
+  # Jinja setup
+  #
+  # Unfortunately, if you want to render a jinja template that is stored in a
+  # file, you need to go through a convoluted process of creating an
+  # "Environment" instance that contains the configuration. It can, for example,
+  # contain global variables that are available in all of the templates
+  if targetFiletype == 'latex':
+    jinjaEnv = jinja2.Environment(
+      # this says that this jinja environment loads templates by looking for
+      # files in the current directory
+      loader=jinja2.FileSystemLoader(os.path.dirname(templateFilename)),
+      # Change the default delimiters used by Jinja such that it won't pick up
+      # brackets attached to LaTeX macros. Stolen from
+      # http://tex.stackexchange.com/questions/40720/latex-in-industry
+      block_start_string = '%{',
+      block_end_string = '%}',
+      comment_start_string = '%{#',
+      comment_end_string = '%#}',
+      variable_start_string = '%{{',
+      variable_end_string = '%}}',
+      autoescape=jinja2.select_autoescape(['htm', 'html', 'xml']))
+
+  else:
+    jinjaEnv = jinja2.Environment(
+      # this says that this jinja environment loads templates by looking for
+      # files in the current directory
+        loader=jinja2.FileSystemLoader(os.path.dirname(templateFilename)),
+      # autoescape=jinja2.select_autoescape(
+      # disabled_extensions=('htm', 'html', 'xml'))
+      )
+
+
+  jinjatemplate = jinjaEnv.get_template(os.path.basename(templateFilename))
+  outfile.write(jinjatemplate.render(exclist=exclist))
+
+
+
+
+def mergeArgsWithDefaults(args):
+  """Merge the arguments obtained form argparse with the defaults contained in the configuration file.
+  The command line options take priority.
+
+  Returns a dictionary of the following options:
+
+  - infile: file --- the input file
+  - outfile: file --- the output file
+  - templateFilename: str --- the filename of the template
+  - targetFiletype: str --- the filetype of the target; deduced from the filename of the output file or the template filename, unless explicitely given
+  - noconvert: bool --- if true, do not convert the yaml input
+  - debug: bool --- display debugging information
+
+  Note that the configuration files can have an option 'templateDirs',
+  which specifies the directories in which to look for templates.
+  """
+
+  # Structure of this code:
+  # 1. Set defaultOptions (dict of default options).
+  # 2. Set configOptions (dict of options from config files).
+  # 3. Set cliOptions (dict of options from command line interface).
+  # 4. Merge these options (using conservativeDictUpdate).
+  # 5. Fill in any gaps using sensible defaults (such as targetFiletype, which
+  #    can be deduced from the name of the template or the output filename.)
+
+  # Default options (overriden by config file, then by command line options).
+  # This is what we will return.
+  defaultOptions = {
+    'infile': None, # no default
+    'outfile': None, # no default
+    'templateFilename': None, # no default
+    'targetFiletype': None, # set default below
+    'debug': False,
+    'noconvert': False}
+
+
+  # Read config files
+  configOptions = {}
+  configFiles = [os.path.expanduser(args.config)] if args.config \
+    else [os.path.expanduser("~/.questionmaker.yaml")]
+
+  for f in configFiles:
+    if os.path.isfile(f):
+      with open(f, 'r') as configFile:
+        configOptions.update(yaml.load(configFile))
+
+  # An alias in the config options: use 'template' instead of 'templateFilename'
+  configOptions['templateFilename'] = configOptions['template']
+
+
+  # Options from command line interface
+  cliOptions = {
+    'infile': args.infile,
+    'outfile': args.outfile,
+    'templateFilename': args.template,
+    'targetFiletype': args.filetype,
+    'debug': args.debug,
+    'noconvert': args.noconvert
+  }
+
+
+  # Merge
+  options = defaultOptions # will return this
+  conservativeDictUpdate(options, configOptions)
+  conservativeDictUpdate(options, cliOptions)
+
+
+  # Deduce sensible defaults
+
+  # Search for the template
+  options['templateFilename'] = getTemplateFromOptions(
+      options['templateFilename'],
+      ['./', '~/proj/questionmaker/templates'] + list(configOptions.get('templateDirs', [])))
+
+  # Deduce the target filetype, if it hasn't been given yet.
+  if options['targetFiletype'] is None:
+    options['targetFiletype'] = getOutputfileFormat(options['outfile'], options['templateFilename'])
+
+
+
+  if args.debug:
+    print("Using the following options:")
+    for name, value in options.items():
+      print(name, value)
+
+  return options
+
+
+def conservativeDictUpdate(x, y):
+  """Update dictionary x with dictionary y, but conservatively:
+  do not create any new keys in x
+  and if a value in y is `None`, then do not update that value.
+  """
+  for key, value in x.items():
+    if y.get(key) is not None:
+      x[key] = y[key]

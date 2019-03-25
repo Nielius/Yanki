@@ -1,5 +1,6 @@
 import ruamel.yaml
 from ankiinterface import AnkiCollection, updateNote
+from convert import convertExercise
 
 
 # Load the file
@@ -53,8 +54,8 @@ class ExercisesFile:
     # (with the metadata hidden from the list view)
     #
 
-    def __init__(self, filename):
-        self.yamlfile = open(filename, "r+")
+    def __init__(self, file):
+        self.yamlfile = file # was: open(filename, "r+")
         self.rawdata = yaml.load(self.yamlfile) # entire yaml file
         self.metadata = self.rawdata[0] # the first entry, which is metadata
 
@@ -133,14 +134,15 @@ class ExercisesFile:
         for q in self.getAllExercises():
             # if the exercise has already been added and needs to be updated:
             ankiid = q.get('anki-id')
+            qconv = convertExercise(q.copy(), 'html')
             if not ankiid is None:
                 n = self.ankicollection.getNoteById(ankiid)
                 if n is None:
                     print(f'Error! The exercise {q} has anki-id {ankiid}, but is not in the anki collection!')
                 else:
-                    updateNote(n, q)
+                    updateNote(n, qconv)
             else:
-                n = self.ankicollection.addNote(q)
+                n = self.ankicollection.addNote(qconv)
                 q['anki-id'] = n.id
 
         # Write the anki ids to the yaml file.
@@ -164,12 +166,11 @@ if __name__ == "__main__":
     ef.writeToAnki()
 
 
-
 def convertYamlFileToNewFormat(filename,
                        collection = '/home/niels/.local/share/Anki2/Tmpuser/collection.anki2',
                        deckname = 'Default',
                        modelname = 'Basic'):
-    """Take a file that does not have any metadata, and add the metadata."""
+    """Take a yaml file that does not have any metadata, and add the metadata."""
     f = open(filename, "r+")
     filecontent = f.read()
     f.seek(0, 0)
