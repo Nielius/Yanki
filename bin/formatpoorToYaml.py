@@ -1,4 +1,4 @@
-# quickconvert.py
+# formatpoorToYaml.py
 #
 # The purpose of this code is to generate YAML files for my yanki application
 # from files that have a very easy format, described below.
