@@ -46,7 +46,7 @@ The supported commands are
     def ankify(self):
         parser = argparse.ArgumentParser(
             description='Add the yanki cards to an anki collection')
-        parser.add_argument('infile', nargs='?', type=argparse.FileType('r'),
+        parser.add_argument('infile', nargs='?', type=argparse.FileType('r+'),
                             default=sys.stdin)
         parser.add_argument('--collection', '-c',
                             required=False,
@@ -57,6 +57,17 @@ The supported commands are
         # now that we're inside a subcommand, ignore the first
         # TWO argvs, ie the command (yanki) and the subcommand (ankify)
         args = parser.parse_args(sys.argv[2:])
+
+
+        ef = ExercisesFile(args.infile)
+        if args.deck is not None:
+            ef.metadata['deck'] = args.deck
+        if args.collection is not None:
+            ef.metadata['collection'] = args.collection
+        ef.connectToAnkiCollection()
+        ef.writeToAnki()
+
+
         print('Running ankify.')
 
     def export(self):

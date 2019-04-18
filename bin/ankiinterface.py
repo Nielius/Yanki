@@ -107,12 +107,30 @@ class AnkiCollection():
     updateNote(n, fieldsdict)
     # add all the cards for this note
     self.collection.genCards([n.id])
+
+    # Necessary to get all cards into the right deck
+    deckid = self.currentDeck()['id']
+    for card in n.cards():
+      card.did = deckid
+      card.flush()
+
     return n
 
   def getNoteById(self, nid):
     """Returns the note with id `nid`.
     """
-    return self.collection.getNote(nid)
+    # MAKE THIS SAFE!
+    # Catch TypeError:
+    # if the note id is not found,
+    # then for some stupid reason, a TypeError is raised
+    # (i.e., the anki code does not check if the note actually exists;
+    # and if the database returns an empty list, a TypeError occurs)
+    try:
+      note = self.collection.getNote(nid)
+    except TypeError:
+      raise ValueError(f'The note with id {nid} does not seem to exist.')
+
+    return note
 
 
   # Models

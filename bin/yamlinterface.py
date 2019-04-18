@@ -48,6 +48,12 @@ yaml = ruamel.yaml.YAML()
 class ExercisesFile:
     """A handler for a YAML file with exercises. It interprets the metadata and
     stores the list of exercises in `self.data`.
+
+    It also has an interface to connect with the Anki database.
+    The function 'connectToAnkiCollection()' does the connection
+    (based on the metadata)
+    and the function 'writeToAnki()' writes the data to the Anki database
+    (and also updates the yaml file to contain the anki ids).
     """
     # TODO: consider implementing __setitem__, __getitem__ etc.
     # so that the ExercisesFile behaves as a list of questions
@@ -86,18 +92,23 @@ class ExercisesFile:
 
 
     # Interface with Anki
-    def connectToAnkiCollection(self):
+    def connectToAnkiCollection(self, collection = None):
         """If the metadata contains a reference to an Anki collection, this sets
         self.ankicollection to an AnkiCollection class corresponding to that
         collection.
+
+        If the optional argument 'collection' is None, then use the metadata to
+        get the collection.
 
         In addition, if the metadata contains the description of a model (TODO!
         not implemented yet), then this model is added to the collection if it
         had not been there before. If no model is given in the metadata, the
         default Yanki-model is added.
+
         """
         try:
-            self.ankicollection = AnkiCollection(collectionfile = self.metadata['collection'],
+            self.ankicollection = AnkiCollection(collectionfile = (collection if collection \
+                                                                   else self.metadata['collection']),
                                                  deckname = self.metadata.get('deck', None),
                                                  # Modelname is None,
                                                  # because we will manually set
@@ -122,19 +133,27 @@ class ExercisesFile:
                                          }])
             self.ankicollection.selectModelByName('Yanki default')
 
-    def writeToAnki(self):
+    def writeToAnki(self, deck = None):
         """Adds/updates all exercises in the yaml file to the anki collection
         specified in the metadata.
 
+        If the optional argument deck is given, connect to that deck.
+        Otherwise, use the metadata.
+        If there is no deck in the metadata either,
+        try to construct a deckname from the default file.
+
         Any new exercises get an anki id, which is written to the yaml file.
         """
-        self.connectToAnkiCollection()
+        if getattr(self, 'ankicollection', None) is None:
+            self.connectToAnkiCollection()
+
 
         # Add all exercises to the Anki collection and record their anki ids.
         for q in self.getAllExercises():
             # if the exercise has already been added and needs to be updated:
             ankiid = q.get('anki-id')
-            qconv = convertExercise(q.copy(), 'html')
+            qconv = q.copy()
+            convertExercise(qconv, 'html')
             if not ankiid is None:
                 n = self.ankicollection.getNoteById(ankiid)
                 if n is None:
@@ -142,7 +161,7 @@ class ExercisesFile:
                 else:
                     updateNote(n, qconv)
             else:
-                n = self.ankicollection.addNote(qconv)
+                n = self.ankicollection.addNote(qconv, self.metadata.get('deck', None))
                 q['anki-id'] = n.id
 
         # Write the anki ids to the yaml file.
