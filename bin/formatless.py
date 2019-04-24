@@ -26,6 +26,13 @@
 # 5. There are no escape sequences. The only special situation is markdown code
 # blocks, which start with '```' on a line and end with a line that is only
 # '````.
+#
+#
+# Usage of the Formatless class:
+#
+# - `Formatless.__init__(self, filename)`: open and parse a file with formatless syntax
+# - `Formatless.writeToFile(self, filename)`: write the data to a formatless file
+# - `writeListToFormatless(data, outfile)`: write any list of question, answer and id to outfile in formatless syntax
 
 from enum import Enum
 
@@ -57,6 +64,10 @@ class Formatless:
     """Parses formatless files."""
 
     def __init__(self, filename):
+        """Initializes a file with formatless syntax: opens the file, parses it, and
+        stores the resulting list of dictionaries (with question, answer and
+        possibly id) in `self.data`.
+        """
         # TODO: wrong pattern! input should just be a file handler *OR* a filename
         # I think there was something smart for that.
         self.filename = filename
