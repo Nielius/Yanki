@@ -35,6 +35,9 @@
 # - `writeListToFormatless(data, outfile)`: write any list of question, answer and id to outfile in formatless syntax
 
 from enum import Enum
+from yankiintermediate import NotesCollection, NotesCollectionMetadata
+import yaml
+import os.path
 
 # To track the state of the parser:
 pstate = Enum('Parser state',
@@ -48,9 +51,10 @@ def writeListToFormatless(data, outfile):
     answer)) to outfile as a formatless file.
 
     """
+    outfile.seek(0)
     for exc in data:
         if 'id' in exc:
-            outfile.write('id ' + exc['id'])
+            outfile.write('id ' + str(exc['id']) + '\n')
         if 'question' in exc:
             outfile.write(exc['question'] + '\n')
         else:
@@ -59,20 +63,46 @@ def writeListToFormatless(data, outfile):
             outfile.write(exc['answer'] + '\n')
         outfile.write('\n')
 
+def NotesCollectionToFormatless(col, outfile):
+    """Write the data of a NotesCollection to the file outfile.
+    The metadata is written to outfile.name + '.yml' by default."""
+    with open(outfile.name + '.yml', 'w') as metaoutfile:
+        try:
+            writeListToFormatless(col.notes, outfile)
+            yaml.dump(col.metadata.asDict(), metaoutfile)
+
+        except yaml.YAMLError as exc:
+            print(exc)
+
+def FormatlessToNotesCollection(filename):
+    return Formatless(filename).asNotesCollection()
+
 
 class Formatless:
     """Parses formatless files."""
 
-    def __init__(self, filename):
+    def __init__(self, infile):
         """Initializes a file with formatless syntax: opens the file, parses it, and
         stores the resulting list of dictionaries (with question, answer and
         possibly id) in `self.data`.
         """
-        # TODO: wrong pattern! input should just be a file handler *OR* a filename
-        # I think there was something smart for that.
-        self.filename = filename
-        self.file = open(filename, 'r')
+        self.file = infile
+        self.filename = infile.name
+        self.metafilename = self.filename + '.yml'
         self.data = self.parse()
+
+        # Open metadata
+        try:
+            with open(self.metafilename, 'r') as stream:
+                try:
+                    self.metadata = yaml.safe_load(stream)
+                except yaml.YAMLError as exc:
+                    print(exc)
+        except FileNotFoundError:
+            # Use defaults:
+            self.metadata = {'collection' : '/home/niels/.local/share/Anki2/Tmpuser/collection.anki2',
+                'deck' : os.path.basename(os.path.splitext(self.filename)[0])}
+
 
     def parse(self):
         # init
@@ -106,22 +136,30 @@ class Formatless:
                         incodeblockp = (incodeblockp + 1) % 2
         return res
 
-    def writeToFile(self, outfile):
-        """Write the data of this formatless file to the file outfile."""
-        writeListToFormatless(self.data, outfile)
+
+    def asNotesCollection(self):
+        return NotesCollection(self.data,
+                               NotesCollectionMetadata(**self.metadata))
 
 
 # Testing suite
 def test():
     # Open file
-    infile = '/home/niels/tmp/formatless-test-file.md'
-    res = Formatless(infile)
+    infilename = '/home/niels/tmp/formatless-test-file.md'
+    outfilename = '/home/niels/tmp/formatless-test-file-out.md'
 
-    # Change it a bit
-    for exc in res.data:
-        exc['question'] = 'Huh? ' + exc['question']
+    with open('/home/niels/tmp/formatless-test-file.md', 'r+') as infile:
+        nc = FormatlessToNotesCollection(infile)
 
-    # And write it to a file
-    outfile = open('/home/niels/tmp/formatless-test-file-changed.md', 'w')
-    res.writeToFile(outfile)
-    outfile.close()
+    nc.writeToAnki()
+
+    with open('/home/niels/tmp/formatless-test-file-out.md', 'w') as outfile:
+        NotesCollectionToFormatless(nc, outfile)
+
+
+    from uuid import uuid4 as uuid
+    for note in nc.notes:
+        note['id'] = str(uuid())
+
+    # Write to file
+    NotesCollectionToFormatless(nc, outfile)

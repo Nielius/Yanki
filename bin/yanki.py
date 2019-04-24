@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+#
+# This is the CLI.
 
 import argparse
 import sys
@@ -6,6 +8,8 @@ import sys
 import export
 import convert
 from yamlinterface import ExercisesFile
+
+from formatless import FormatlessToNotesCollection, NotesCollectionToFormatless
 
 
 class Yanki(object):
@@ -45,7 +49,7 @@ The supported commands are
 
     def ankify(self):
         parser = argparse.ArgumentParser(
-            description='Add the yanki cards to an anki collection')
+            description='Add the yanki cards to an anki collection. Accepts yaml files and markdown files following the "formatless" syntax.')
         parser.add_argument('infile', nargs='?', type=argparse.FileType('r+'),
                             default=sys.stdin)
         parser.add_argument('--collection', '-c',
@@ -54,21 +58,29 @@ The supported commands are
         parser.add_argument('--deck', '-d',
                             required=False,
                             help='use this deck instead of the deck in the metadata')
+        parser.add_argument('--noupdate', '-n',
+                            action='store_true',
+                            help='do not update the input file with anki ids')
         # now that we're inside a subcommand, ignore the first
         # TWO argvs, ie the command (yanki) and the subcommand (ankify)
         args = parser.parse_args(sys.argv[2:])
 
+        # distinguish two cases: md extension or yaml extension
 
-        ef = ExercisesFile(args.infile)
-        if args.deck is not None:
-            ef.metadata['deck'] = args.deck
-        if args.collection is not None:
-            ef.metadata['collection'] = args.collection
-        ef.connectToAnkiCollection()
-        ef.writeToAnki()
+        if infile.name.endswith('.md'):
+            ncol = FormatlessToNotesCollection(infile)
+            ncol.writeToAnki()
+            if args.noupdate is not True:
+                NotesCollectionToFormatless(ncol, infile)
 
+        elif infile.name.endswith('.yml'):
+            print('Yaml files have not been completely implemented yet.')
+            exit(1)
+        else:
+            print(f'The input file {infile.name} has an unrecognized extension.\n' +
+                  'Use either a yaml file or a markdown file.')
+            exit(1)
 
-        print('Running ankify.')
 
     def export(self):
         """Export a yanki file to some other file format, using a jinja2 template."""
@@ -136,4 +148,3 @@ The supported commands are
 
 if __name__ == '__main__':
     Yanki()
-
