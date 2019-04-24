@@ -132,6 +132,17 @@ class AnkiCollection():
 
     return note
 
+  def getNoteByGuid(self, guid):
+    """Returns the note with given guid.
+
+    Raises an error if there is not exactly one note with that guid."""
+    results = self.collection.db.list(f'select n.id from notes n where n.guid=\'{guid}\'')
+    if len(results) != 1:
+      raise ValueError(f'There are {len(results)} notes with guid {guid}.')
+
+    return self.getNoteById(results[0])
+
+
 
   # Models
 
