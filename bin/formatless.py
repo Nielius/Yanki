@@ -16,12 +16,12 @@
 # 1. Questions are separated by newlines (except for newlines within code
 # blocks).
 #
-# 2. The first line that does not start with 'id ' is the question. The
+# 2. The first line that does not start with 'id ', 'uuid ' or 'anki-guid ' is the question. The
 # question is always only one line.
 #
 # 3. Everything that follows the question, is the answer.
 #
-# 4. Questions may optionally start with 'id [id]' to denote the id.
+# 4. Questions may optionally start with 'id [id]' (or similarly for 'uuid' and 'anki-guid') to denote the id.
 #
 # 5. There are no escape sequences. The only special situation is markdown code
 # blocks, which start with '```' on a line and end with a line that is only
@@ -38,6 +38,7 @@ from enum import Enum
 from yankiintermediate import NotesCollection, NotesCollectionMetadata
 import yaml
 import os.path
+from uuid import uuid4 as uuid
 
 # To track the state of the parser:
 pstate = Enum('Parser state',
@@ -53,8 +54,13 @@ def writeListToFormatless(data, outfile):
     """
     outfile.seek(0)
     for exc in data:
+        if 'uuid' not in exc:
+            exc['uuid'] = str(uuid())
+        outfile.write('uuid ' + str(exc['uuid']) + '\n')
         if 'id' in exc:
             outfile.write('id ' + str(exc['id']) + '\n')
+        if 'anki-guid' in exc:
+            outfile.write('anki-guid ' + str(exc['anki-guid']) + '\n')
         if 'question' in exc:
             outfile.write(exc['question'] + '\n')
         else:
@@ -124,13 +130,18 @@ class Formatless:
                 if incodeblockp == 1:
                     q['answer'] = q.get('answer', '') + '\n'
             else:
-                if state == pstate.outside and l.startswith("id "):
-                    q['id'] = l[3:].strip()
-                    state = pstate.preamble
-                elif state == pstate.outside or state == pstate.preamble:
-                    q['question'] = l.strip()
-                    state = pstate.answer
-                elif state == pstate.answer:
+                if state == pstate.outside or state == pstate.preamble: # still parsing metadata
+                    state = pstate.preamble # we are now in the preamble of a question
+                    if l.startswith("uuid "):
+                        q['uuid'] = l[5:].strip()
+                    elif l.startswith("id "):
+                        q['id'] = l[3:].strip()
+                    elif l.startswith("anki-guid "):
+                        q['anki-guid'] = l[10:].strip()
+                    else:
+                        q['question'] = l.strip()
+                        state = pstate.answer
+                elif state == pstate.answer: # have already seen the question
                     q['answer'] = q.get('answer', '') + l
                     if l.startswith('```'):
                         incodeblockp = (incodeblockp + 1) % 2
