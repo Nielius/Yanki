@@ -71,8 +71,8 @@ class NotesCollection:
         The target anki collection is self.ankicollection if it exists;
         otherwise, it is taken from the metadata.
 
-        If the notes in the collection did not yet have an id field, they
-        receive an id from Anki, which is stored in this collection. It is
+        If the notes in the collection did not yet have an anki-guid field, they
+        receive an anki-guid from Anki, which is stored in this collection. It is
         advisable to always follows this function with a procedure that stores
         these new ids in the input file.
 
@@ -89,18 +89,18 @@ class NotesCollection:
         # Add all exercises to the Anki collection and record their anki ids.
         for q in self.notes:
             # if the exercise has already been added and needs to be updated:
-            ankiid = q.get('id')
+            ankiid = q.get('anki-guid')
             qconv = q.copy()
             convertExercise(qconv, 'html')
             if ankiid is not None:
-                n = self.ankicollection.getNoteById(ankiid)
+                n = self.ankicollection.getNoteByGuid(ankiid)
                 if n is None:
-                    print(f'Error! The exercise {q} has anki-id {ankiid}, but is not in the anki collection!')
+                    print(f'Error! The exercise {q} has anki-guid {ankiid}, but is not in the anki collection!')
                 else:
                     updateNote(n, qconv)
             else:
                 n = self.ankicollection.addNote(qconv, getattr(self.metadata, 'deck', None))
-                q['id'] = n.id
+                q['anki-guid'] = n.guid
 
         # Write the anki ids to the yaml file.
         self.ankicollection.collection.save()

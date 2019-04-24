@@ -39,6 +39,14 @@ from yankiintermediate import NotesCollection, NotesCollectionMetadata
 import yaml
 import os.path
 from uuid import uuid4 as uuid
+from base64 import b32encode, b32decode
+
+# To encode/decode strings to strings with b32
+def b32stren(s):
+    return b32encode(s.encode('utf-8')).decode('utf-8')
+
+def b32strde(s):
+    return b32decode(s.encode('utf-8')).decode('utf-8')
 
 # To track the state of the parser:
 pstate = Enum('Parser state',
@@ -60,7 +68,7 @@ def writeListToFormatless(data, outfile):
         if 'id' in exc:
             outfile.write('id ' + str(exc['id']) + '\n')
         if 'anki-guid' in exc:
-            outfile.write('anki-guid ' + str(exc['anki-guid']) + '\n')
+            outfile.write('anki-guid ' + b32stren(exc['anki-guid']) + '\n')
         if 'question' in exc:
             outfile.write(exc['question'] + '\n')
         else:
@@ -137,7 +145,7 @@ class Formatless:
                     elif l.startswith("id "):
                         q['id'] = l[3:].strip()
                     elif l.startswith("anki-guid "):
-                        q['anki-guid'] = l[10:].strip()
+                        q['anki-guid'] = b32strde(l[10:].strip())
                     else:
                         q['question'] = l.strip()
                         state = pstate.answer
