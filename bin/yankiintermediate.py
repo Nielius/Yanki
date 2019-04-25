@@ -25,7 +25,7 @@ class NotesCollection:
         self.metadata = metadata if metadata is not None else NotesCollectionMetadata()
 
     # Interface with Anki
-    def connectToAnkiCollection(self, collection = None):
+    def connectToAnkiCollection(self, collection = None, deck = None):
         """If the metadata contains a reference to an Anki collection, this sets
         self.ankicollection to an AnkiCollection class corresponding to that
         collection.
@@ -42,7 +42,7 @@ class NotesCollection:
         try:
             self.ankicollection = AnkiCollection(
                 collectionfile = collection if collection is not None else self.metadata.collection,
-                deckname = self.metadata.deck,
+                deckname = deck if deck is not None else self.metadata.deck,
                 # Modelname is None,
                 # because we will manually set
                 # the modelname
@@ -67,7 +67,7 @@ class NotesCollection:
             )
             self.ankicollection.selectModelByName('Yanki default')
 
-    def writeToAnki(self, deck = None):
+    def writeToAnki(self, deck = None, collection = None):
         """Adds/updates all exercises in the yaml file to an anki collection.
         The target anki collection is self.ankicollection if it exists;
         otherwise, it is taken from the metadata.
@@ -77,15 +77,22 @@ class NotesCollection:
         advisable to always follows this function with a procedure that stores
         these new ids in the input file.
 
-        If the optional argument deck is given, connect to that deck.
+        If the optional argument collection is given,
+        connect to that collection.
+        If the optional argument deck is given,
+        add any *new* cards to that deck.
+        (Old cards are updated and remain in their old deck.)
         Otherwise, use the metadata.
         If there is no deck in the metadata either,
         try to construct a deckname from the default file.
 
         """
-        if getattr(self, 'ankicollection', None) is None:
-            self.connectToAnkiCollection()
+        if deck is None:
+            deck = getattr(self.metadata, 'deck', None)
 
+
+        if getattr(self, 'ankicollection', None) is None:
+            self.connectToAnkiCollection(collection = collection, deck = deck)
 
         # Add all exercises to the Anki collection and record their anki ids.
         for q in self.notes:
@@ -100,7 +107,7 @@ class NotesCollection:
                 else:
                     updateNote(n, qconv)
             else:
-                n = self.ankicollection.addNote(qconv, getattr(self.metadata, 'deck', None))
+                n = self.ankicollection.addNote(qconv, deck)
                 q['anki-guid'] = n.guid
 
         # Write the anki ids to the yaml file.

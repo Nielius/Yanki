@@ -83,7 +83,8 @@ The supported commands are
         # The actual Anki update
         ncimport, ncexport = NotesCollectionFunctionsFromFile(args.infile.name)
         ncol = ncimport(args.infile)
-        ncol.writeToAnki()
+        ncol.writeToAnki(deck = args.deck,
+                         collection = args.collection)
         if args.noupdate is not True:
             ncexport(ncol, args.infile)
 
