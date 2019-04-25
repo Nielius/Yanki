@@ -43,7 +43,7 @@ class Yanki(object):
 
         # Initialize main parser
         parser = argparse.ArgumentParser(
-            description='Pretends to be git',
+            description='Export flashcards to Anki or jinja2 templating system.',
             usage='''yanki <command> [<args>]
 
 The supported commands are
