@@ -58,12 +58,13 @@ class NotesCollection:
         else:
             # Add default model if it does not already exist
             self.ankicollection.addModel('Yanki default',
-                                         ['question', 'answer', 'ref'],
+                                         ['question', 'answer', 'ref', 'uuid'], # the fields
                                          [{'name': 'Normal',
                                            'qfmt':  "{{question}}",
                                            'afmt':  "{{answer}}" + \
-                                           "{{#ref}}\n\n(Ref: {{ref}}){{/ref}}"
-                                         }])
+                                           "{{#ref}}\n\n(Ref: {{ref}}){{/ref}}"}
+                                         ] # a list of templates (each template is a card made from the fields)
+            )
             self.ankicollection.selectModelByName('Yanki default')
 
     def writeToAnki(self, deck = None):
