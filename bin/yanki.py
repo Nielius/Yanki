@@ -9,15 +9,20 @@ import export
 import convert
 
 from formatless import FormatlessToNotesCollection, NotesCollectionToFormatless
+from yamlinterface import YAMLToNotesCollection, NotesCollectionToYAML
 
 def NotesCollectionFunctionsFromFile(filename):
     """Returns two functions: the first to import a NotesCollection from a file
     of the same filetype as the argument filename, and the second to export a NotesCollection
-    to such a file."""
+    to such a file.
+
+    The import function expects as input a file handler for reading.
+    The output function expects as input a NotesCollection and a file handler for writing.
+    """
     if filename.endswith('.md'):
         return FormatlessToNotesCollection, NotesCollectionToFormatless
-    elif filename.endswith('.yml'):
-        raise ValueError(f'YAML import/export has not yet been fully implemented.')
+    elif filename.endswith('.yml') or filename.endswith('.yaml'):
+        return YAMLToNotesCollection, NotesCollectionToYAML
     else:
         raise ValueError(f'No known import/export functions for file {filename}.')
 

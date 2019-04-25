@@ -46,20 +46,21 @@ yaml = ruamel.yaml.YAML()
 # - easy updates (of metadata and of exercise)
 # - easy read
 
-def notesCollectionFromYAML(yamlfile):
-        self.yamlfile = file # was: open(filename, "r+")
-        self.rawdata = yaml.load(self.yamlfile) # entire yaml file
-        return NotesCollection(rawdata[1:],
-                               NotesCollectionMetadata(**rawdata[0]))
+def YAMLToNotesCollection(yamlfile):
+    """Imports a YAML file as a NotesCollection."""
+    rawdata = yaml.load(yamlfile)
+    return NotesCollection(rawdata[1:], NotesCollectionMetadata(**rawdata[0]))
 
 
-def notesCollectionToYAMLFile(col, yamlfile):
-    # Write to the yaml file
-    def overwriteFile(self):
-        """Save all the data to the yaml file."""
-        self.yamlfile.seek(0)
-        yaml.dump(self.rawdata, self.yamlfile)
-        self.yamlfile.truncate()
+def NotesCollectionToYAML(col, yamlfile):
+    """Saves a NotesCollection to a yaml file."""
+    yamlfile.seek(0)
+    metadatadict = col.metadata.asDict()
+    metadatadict.update({'metadata': True}) # this is required in our syntax for YAML files
+    rawdata = ruamel.yaml.comments.CommentedSeq([metadatadict])
+    rawdata.extend(col.notes)
+    yaml.dump(rawdata, yamlfile)
+    yamlfile.truncate()
 
 
 
