@@ -7,7 +7,6 @@ import sys
 
 import export
 import convert
-from yamlinterface import ExercisesFile
 
 from formatless import FormatlessToNotesCollection, NotesCollectionToFormatless
 
@@ -67,13 +66,13 @@ The supported commands are
 
         # distinguish two cases: md extension or yaml extension
 
-        if infile.name.endswith('.md'):
-            ncol = FormatlessToNotesCollection(infile)
+        if args.infile.name.endswith('.md'):
+            ncol = FormatlessToNotesCollection(args.infile)
             ncol.writeToAnki()
             if args.noupdate is not True:
-                NotesCollectionToFormatless(ncol, infile)
+                NotesCollectionToFormatless(ncol, args.infile)
 
-        elif infile.name.endswith('.yml'):
+        elif args.infile.name.endswith('.yml'):
             print('Yaml files have not been completely implemented yet.')
             exit(1)
         else:
