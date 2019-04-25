@@ -10,6 +10,17 @@ import convert
 
 from formatless import FormatlessToNotesCollection, NotesCollectionToFormatless
 
+def NotesCollectionFunctionsFromFile(filename):
+    """Returns two functions: the first to import a NotesCollection from a file
+    of the same filetype as the argument filename, and the second to export a NotesCollection
+    to such a file."""
+    if filename.endswith('.md'):
+        return FormatlessToNotesCollection, NotesCollectionToFormatless
+    elif filename.endswith('.yml'):
+        raise ValueError(f'YAML import/export has not yet been fully implemented.')
+    else:
+        raise ValueError(f'No known import/export functions for file {filename}.')
+
 
 class Yanki(object):
     """This allows us to use argparse with several subcommands,
@@ -64,21 +75,13 @@ The supported commands are
         # TWO argvs, ie the command (yanki) and the subcommand (ankify)
         args = parser.parse_args(sys.argv[2:])
 
-        # distinguish two cases: md extension or yaml extension
+        # The actual Anki update
+        ncimport, ncexport = NotesCollectionFunctionsFromFile(args.infile.name)
+        ncol = ncimport(args.infile)
+        ncol.writeToAnki()
+        if args.noupdate is not True:
+            ncexport(ncol, args.infile)
 
-        if args.infile.name.endswith('.md'):
-            ncol = FormatlessToNotesCollection(args.infile)
-            ncol.writeToAnki()
-            if args.noupdate is not True:
-                NotesCollectionToFormatless(ncol, args.infile)
-
-        elif args.infile.name.endswith('.yml'):
-            print('Yaml files have not been completely implemented yet.')
-            exit(1)
-        else:
-            print(f'The input file {infile.name} has an unrecognized extension.\n' +
-                  'Use either a yaml file or a markdown file.')
-            exit(1)
 
 
     def export(self):
