@@ -123,8 +123,10 @@ The supported commands are
 
         options = export.mergeArgsWithDefaults(args)
 
-        excfile = ExercisesFile(options['infile'])
-        qs = excfile.getAllExercises()
+        # Get all the questions as a list of dictionaries
+        ncimport, ncexport = NotesCollectionFunctionsFromFile(args.infile.name)
+        ncol = ncimport(args.infile)
+        qs = ncol.notes
 
         # Convert
         targetFiletype = options['targetFiletype']
