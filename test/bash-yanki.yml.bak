@@ -1,0 +1,66 @@
+- metadata: true
+  collection: /home/niels/.local/share/Anki2/Tmpuser/collection.anki2
+  deck: bash-yanki
+- question: |-
+    Rapidly invoke an editor to write a long, complex, or tricky command.
+  answer: |-
+    - `fc` (and starts with a previous command)
+    - `C-x C-e` in emacs mode or `esc v` in vim mode (`set -o -vi`)
+  anki-id: 1553759839802
+- question: |-
+    How do you substitute a pattern by a string in a paramter?
+  answer: |-
+    `${parameter/patterng/string}`
+  anki-id: 1553759839805
+- question: |-
+    How do you remove a matching prefix pattern from a parameter?
+  answer: |-
+    `${parameter#word}` to remove the shortest matching pattern,
+    `${parameter##word}` to remove the longest matching pattern.
+  anki-id: 1553759839806
+- question: |-
+    How do you remove a matching suffix pattern from a parameter?
+  answer: |-
+    `${parameter%word}` to remove the shortest matching pattern,
+    `${parameter%%word}` to remove the longest matching pattern,
+  anki-id: 1553759839808
+- question: |-
+    Write a for loop
+  answer: |-
+    ```bash
+    for VAR in ARG
+    do
+      CMD
+      ...
+    done
+    ```
+  anki-id: 1553759839810
+- question: |-
+    Write an if, else if, else statement
+  answer: |-
+    ```bash
+    if test
+    then
+      cmd
+      …
+    elif test
+    then
+      cmd
+      …
+    else
+      cmd
+      …
+    fi
+    ```
+  anki-id: 1553759839812
+- question: |-
+    In Bash, what are the differences between single quotes ('') and double quotes ("")?
+  answer: |-
+    Single quotes don't interpolate anything (not variables, backticks, `\` escapes),
+    while double quotes do.
+  anki-id: 1553759839813
+- question: |-
+    What is the special variable `$#`?
+  answer: |-
+    The number of arguments (without counting the script name variable `$0`).
+  anki-id: 1553759839815
