@@ -65,9 +65,9 @@ def NotesCollectionToYAML(col, yamlfile):
 
 
 def convertYamlFileToNewFormat(filename,
-                       collection = '/home/niels/.local/share/Anki2/Tmpuser/collection.anki2',
-                       deckname = 'Default',
-                       modelname = 'Basic'):
+                               collection,
+                               deckname = 'Default',
+                               modelname = 'Basic'):
     """Take a yaml file that does not have any metadata, and add the metadata."""
     f = open(filename, "r+")
     filecontent = f.read()

@@ -38,6 +38,7 @@ from enum import Enum
 from yankiintermediate import NotesCollection, NotesCollectionMetadata
 import yaml
 import os.path
+from os import environ
 from uuid import uuid4 as uuid
 from base64 import b32encode, b32decode
 
@@ -114,8 +115,8 @@ class Formatless:
                     print(exc)
         except FileNotFoundError:
             # Use defaults:
-            self.metadata = {'collection' : '/home/niels/.local/share/Anki2/Tmpuser/collection.anki2',
-                'deck' : os.path.basename(os.path.splitext(self.filename)[0])}
+            self.metadata = {'collection' : os.path.join(environ('HOME'), '.local/share/Anki2/User 1/collection.anki2'),
+                             'deck' : os.path.basename(os.path.splitext(self.filename)[0])}
 
 
     def parse(self):

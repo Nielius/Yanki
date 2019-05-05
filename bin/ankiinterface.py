@@ -36,7 +36,7 @@ def updateNote(note, updict):
 
 class AnkiCollection():
   def __init__(self,
-               collectionfile = "/home/niels/.local/share/Anki2/Tmpuser/collection.anki2",
+               collectionfile,
                deckname = None,
                modelname = None):
     """Connects to an anki collection stored in a file.
