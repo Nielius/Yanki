@@ -127,7 +127,7 @@ class Formatless:
                     print(exc)
         except FileNotFoundError:
             # Use defaults:
-            self.metadata = {'collection' : os.path.join(environ('HOME'), '.local/share/Anki2/User 1/collection.anki2'),
+            self.metadata = {'collection' : os.path.join(environ['HOME'], '.local/share/Anki2/User 1/collection.anki2'),
                              'deck' : os.path.basename(os.path.splitext(self.filename)[0])}
 
 
