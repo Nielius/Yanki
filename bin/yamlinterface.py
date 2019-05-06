@@ -2,7 +2,7 @@ import ruamel.yaml
 from ankiinterface import AnkiCollection, updateNote
 from convert import convertExercise
 
-from yankiintermediate import NotesCollection, NotesCollectionMetadata
+from notescollection import NotesCollection, NotesCollectionMetadata
 
 # Load the file
 # f = open('test.yaml')

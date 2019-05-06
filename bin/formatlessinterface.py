@@ -1,15 +1,27 @@
 # formatless.py
 #
-# Parse a "formatless" file.
+# Reads and writes so-called "formatless" files.
+#
+# For read: `Formatless.__init__(self, filename)`.
+# For write: `writeListToFormatless(data, outfile)`.
+#
+#
+# Intro
 #
 # "Formatless" is a file syntax that is not so expressive, but expressive
-# enough for basic yanki cards. They seem to be what I will need most anyway.
+# enough for basic yanki cards. The main advantage is that it is simply a
+# markdown file in a specific format (the first sentence of every paragraph is
+# the question; the rest is the answer; possibly this paragraph is preceded by
+# some metadata) that can very easily and quickly be read and written by a
+# human, using any text editor. It is much less of a hassle to read and write
+# than comparable YAML files.
 #
-# A possible (as of yet unimplemented) extension would be to have a formatless
-# file together with a metadata file. This metadata file could be more
-# complicated (e.g. YAML or sexps) and use the IDs of the cards in formatless
-# to express more difficult relations (such as hierarchies of the notes, or
-# general metadata).
+# A possible (as of yet only partially implemented) extension would be to have
+# a formatless file together with a metadata file. This metadata file could be
+# more complicated (e.g. YAML or sexps) and use the IDs of the cards in
+# formatless to express more difficult relations (such as hierarchies of the
+# notes, or general metadata).
+#
 #
 # Informal specification of the syntax:
 #
@@ -28,14 +40,14 @@
 # '````.
 #
 #
-# Usage of the Formatless class:
+# Usage:
 #
 # - `Formatless.__init__(self, filename)`: open and parse a file with formatless syntax
 # - `Formatless.writeToFile(self, filename)`: write the data to a formatless file
 # - `writeListToFormatless(data, outfile)`: write any list of question, answer and id to outfile in formatless syntax
 
 from enum import Enum
-from yankiintermediate import NotesCollection, NotesCollectionMetadata
+from notescollection import NotesCollection, NotesCollectionMetadata
 import yaml
 import os.path
 from os import environ
@@ -57,7 +69,7 @@ pstate = Enum('Parser state',
               'outside') # not reading a question
 
 def writeListToFormatless(data, outfile):
-    """Write a data (a list of dictionaries (with (optionally) id, question,
+    """Writes data (a list of dictionaries (with (optionally) id, question,
     answer)) to outfile as a formatless file.
 
     """
@@ -79,7 +91,7 @@ def writeListToFormatless(data, outfile):
         outfile.write('\n')
 
 def NotesCollectionToFormatless(col, outfile):
-    """Write the data of a NotesCollection to the file outfile.
+    """Writes the data of a NotesCollection to the file outfile.
     The metadata is written to outfile.name + '.yml' by default."""
     with open(outfile.name + '.yml', 'w') as metaoutfile:
         try:
@@ -177,9 +189,23 @@ def test():
         NotesCollectionToFormatless(nc, outfile)
 
 
+    with open('/home/niels/tmp/formatless-test-file.md', 'r+') as infile:
+        nc = FormatlessToNotesCollection(infile)
+    nc.connectToAnkiCollection()
+    ac = nc.ankicollection
+
+    with open('/home/niels/tmp/formatless-test-file-out.md', 'r') as outfilein:
+        ncres2 = FormatlessToNotesCollection(outfilein)
+
+    with open('/home/niels/tmp/formatless-test-file-out.md', 'r+') as outfile:
+        nc = NotesCollectionToFormatless(ncres, outfile)
+
+
     from uuid import uuid4 as uuid
-    for note in nc.notes:
+    for note in ncres.notes:
         note['id'] = str(uuid())
+
+
 
     # Write to file
     NotesCollectionToFormatless(nc, outfile)

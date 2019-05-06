@@ -1,3 +1,5 @@
+# notescollection.py
+#
 # Implements the intermediate representation that sits between Anki and our
 # output files (YAML or formatless).
 #

@@ -8,7 +8,7 @@ import sys
 import export
 import convert
 
-from formatless import FormatlessToNotesCollection, NotesCollectionToFormatless
+from formatlessinterface import FormatlessToNotesCollection, NotesCollectionToFormatless
 from yamlinterface import YAMLToNotesCollection, NotesCollectionToYAML
 
 def NotesCollectionFunctionsFromFile(filename):
