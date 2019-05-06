@@ -1,3 +1,8 @@
+# ankiinterface.py
+#
+# Methods and classes to manipulate Anki databases, based partly on the code
+# that Anki itself uses.
+
 import sys
 
 sys.path.append("/home/niels/proj/anki") # this should probably not really be part of the code

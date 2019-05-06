@@ -1,6 +1,7 @@
 # convert.py
 #
-# Functions to convert strings from markdown to another filetype using pypandoc.
+# Contains helper functions to convert strings from markdown to another
+# filetype using pypandoc.
 
 import pypandoc
 import markdown

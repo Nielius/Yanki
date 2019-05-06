@@ -1,50 +1,23 @@
+# yamlinterface.py
+#
+# Contains functions to interface between NotesCollection and YAML files.
+#
+# The YAML files are formatted as follows:
+#
+# Each file is a list of dictionaries. The first dictionary is a dictionary
+# with metadata about the entire set of questions. (TODO: describe the values
+# that are allowed.) It should have a field `metadata` with the value `True`.
+#
+# All other dictionaries in the list represent questions. They require at least
+# the fields 'question' and 'answer'.
+
 import ruamel.yaml
 from ankiinterface import AnkiCollection, updateNote
 from convert import convertExercise
 
 from notescollection import NotesCollection, NotesCollectionMetadata
-
-# Load the file
-# f = open('test.yaml')
-# data = yaml.load(f)
-
-# Format of yaml files:
-#
-# List of two elements:
-# First element:  Metadata
-# Second element: List of questions
-
-# Or maybe differently? Just a list, where the first element is the metadata,
-# and the rest are the questions?
-# And maybe make it error-friendly: the first dictionary should have 'type':'metadata'
-
-
-# Could also consider using notes guid (global unique id):
-# q['guidb32'] = b32encode(note.guid.encode('ASCII')).decode('ASCII')
-#
-# where q is one of my questions and note is of Anki's class Note
-
-
-# Recurring pattern:
-# check if a model/deck/field/template already exists,
-# then create/update/do nothing.
-
-
 yaml = ruamel.yaml.YAML()
 
-# Exercises file should contain:
-#
-# - data for anki
-#   - collection name
-#   - deck name
-#   - model name
-#
-# - list of exercises
-
-# The interface should allow:
-#
-# - easy updates (of metadata and of exercise)
-# - easy read
 
 def YAMLToNotesCollection(yamlfile):
     """Imports a YAML file as a NotesCollection."""
