@@ -77,9 +77,22 @@ https://stackoverflow.com/questions/10813581/replace-the-expand-icon-of-html5-de
 <script type="text/javascript"
         src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML">
 </script>
+<script type="text/javascript">
+ function openAllAnswers() {
+     var x = document.getElementsByTagName("details");
+     var i;
+     for (i = 0; i < x.length; i++) {
+         x[i].open = (openAllAnswers.state == 0);
+     }
+     openAllAnswers.state = !openAllAnswers.state
+ }
+ openAllAnswers.state = false;
+</script>
 <title>Test</title>
 </head>
 <body>
+
+    <button onclick="openAllAnswers()">Open/close all answers</button>
 
     {# here the ACTUAL WORK starts #}
 
