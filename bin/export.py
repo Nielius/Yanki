@@ -362,7 +362,7 @@ def mergeArgsWithDefaults(args):
         configOptions.update(yaml.load(configFile))
 
   # An alias in the config options: use 'template' instead of 'templateFilename'
-  configOptions['templateFilename'] = configOptions['template']
+  configOptions['templateFilename'] = configOptions.get('template', None)
 
 
   # Options from command line interface
