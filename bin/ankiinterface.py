@@ -8,7 +8,7 @@ import sys
 sys.path.append("/home/niels/proj/anki") # this should probably not really be part of the code
 from anki.storage import Collection
 from anki.models import defaultField, defaultTemplate
-
+from base32helpers import b32stren
 
 # Should support:
 #
@@ -143,7 +143,7 @@ class AnkiCollection():
     Raises an error if there is not exactly one note with that guid."""
     results = self.collection.db.list(f'select n.id from notes n where n.guid=\'{guid}\'')
     if len(results) != 1:
-      raise ValueError(f'There are {len(results)} notes with guid {guid}.')
+      raise ValueError(f'There are {len(results)} notes with guid {guid} (base32encoded: {b32stren(guid)}).')
 
     return self.getNoteById(results[0])
 

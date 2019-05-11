@@ -52,14 +52,7 @@ import yaml
 import os.path
 from os import environ
 from uuid import uuid4 as uuid
-from base64 import b32encode, b32decode
-
-# To encode/decode strings to strings with b32
-def b32stren(s):
-    return b32encode(s.encode('utf-8')).decode('utf-8')
-
-def b32strde(s):
-    return b32decode(s.encode('utf-8')).decode('utf-8')
+from base32helpers import b32stren, b32strde
 
 # To track the state of the parser:
 pstate = Enum('Parser state',
