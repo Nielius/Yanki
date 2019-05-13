@@ -310,7 +310,7 @@ def jinjaExport(exclist, templateFilename, outfile, targetFiletype=None):
 
 
   jinjatemplate = jinjaEnv.get_template(os.path.basename(templateFilename))
-  outfile.write(jinjatemplate.render(exclist=exclist))
+  outfile.write(jinjatemplate.render(exclist=exclist, title=os.path.basename(outfile.name)))
 
 
 
