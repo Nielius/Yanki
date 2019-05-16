@@ -146,7 +146,7 @@ Yanki takes the filename of the Yanki file without the extension as the name for
 
 When Yanki imports a Yanki file, it supplies every note with a uuid and an anki-guid field.
 In the Markdown format, these are given by two lines before the question, and in the Yaml format,
-these are ?????.
+they have their own fields in the dictionary.
 The `uuid` is made with Python's `uuid.uuid4` function and does not play any role yet
 (but it is supplied as an extra field in the imported notes),
 but is implemented as a safety feature and may serve some future purpose.
