@@ -18,6 +18,8 @@ def NotesCollectionFunctionsFromFile(filename):
 
     The import function expects as input a file handler for reading.
     The output function expects as input a NotesCollection and a file handler for writing.
+
+    TODO: make subclasses that implement these features? This is not so pretty.
     """
     if filename.endswith('.md'):
         return FormatlessToNotesCollection, NotesCollectionToFormatless

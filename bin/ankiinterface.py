@@ -223,31 +223,3 @@ class AnkiCollection():
     If it does not exist, return `None`.
     """
     return self.collection.models.byName(modelname)
-
-
-
-
-# Tests
-
-if __name__ == "__main__":
-
-  testdict = {
-    'Hanzi':	'this is Hanzi testietessdfoijt',
-    'Pinyin': 'this is the new pinyin ijoijoasidjfoasijd',
-    'English': 'this is the new Englbasdfish'
-  }
-
-
-  newnote = mcol.addNote(testdict, modelname='Chinese', deckname='Default')
-
-  mcol = AnkiCollection()
-  newmodel = mcol.addModel('Yanki default',
-                           ['question', 'answer', 'ref'],
-                           [{'name': 'Normal',
-                             'qfmt':  "{{question}}",
-                             'afmt':  "{{answer}}" + \
-                             "{{#ref}}\n\n(Ref: {{ref}}){{/ref}}"
-                           }])
-
-
-  mcol.addModel('Yanki default', ['test'], [], failSilently=False)
