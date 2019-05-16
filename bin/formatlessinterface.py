@@ -85,8 +85,10 @@ def writeListToFormatless(data, outfile):
 
 def NotesCollectionToFormatless(col, outfile):
     """Writes the data of a NotesCollection to the file outfile.
+    (This outfile is not a string, but a file object.)
     The metadata is written to outfile.name + '.yml' by default."""
-    with open(outfile.name + '.yml', 'w') as metaoutfile:
+    with open(outfile.absolutepath + '.yml', 'w') as metaoutfile:
+        print(f'Writing to {os.path.realpath(metaoutfile.name)}.')
         try:
             writeListToFormatless(col.notes, outfile)
             yaml.dump(col.metadata.asDict(), metaoutfile)

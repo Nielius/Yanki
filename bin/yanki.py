@@ -3,6 +3,7 @@
 # This is the CLI.
 
 import argparse
+import os.path
 import sys
 
 import export
@@ -81,6 +82,10 @@ The supported commands are
         # now that we're inside a subcommand, ignore the first
         # TWO argvs, ie the command (yanki) and the subcommand (ankify)
         args = parser.parse_args(sys.argv[2:])
+
+
+        # We need to store the absolute path of the input file:
+        args.infile.absolutepath = os.path.realpath(args.infile.name)
 
         # The actual Anki update
         ncimport, ncexport = NotesCollectionFunctionsFromFile(args.infile.name)
