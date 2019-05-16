@@ -2,6 +2,7 @@ Caution: This is still a work in progress and though all functionality is there,
 the user should be careful and prepared to run into some bugs.
 Setting it up probably requires some fiddling.
 It is a command-line program and does not have a GUI.
+Use at your own risk.
 
 With Yanki (originally short for Yaml + Anki),
 you can store your Anki (a flashcard program)
@@ -42,8 +43,10 @@ Clone the github repository. The main program is `bin/yanki.py`, so you may want
 
 In addition to that, you need the [Anki source code](https://github.com/dae/anki),
 which is used to access the Anki databases.
-
-TODO: finish this once I've decided
+You can either specify the path to the anki  source in the configuration file
+(see [Configuration](#Configuration)),
+make a symlink `YANKIPATH/bin/anki` to the folder with the Anki source code,
+or put the Anki source somewhere where Python can find it.
 
 
 # Configuration
@@ -53,14 +56,32 @@ Yanki takes its arguments from three sources:
 
 - the command line arguments;
 - the metadata associated to the Yanki file; and
-- the default configuration in `~/.yanki`.
+- the default configuration in `~/.yanki.yml` or `~/.local/share/Yanki/config.yml`,
+which should be a Yaml dictionary.
 
 The earlier source in this list takes precedence over the sources that follow it.
 
-As of now, the only sensible setting in `~/.yanki` is the path to the Anki collection
-(usually something like `~/.local/share/Anki2/User 1/collection.anki2`).
-This setting can however also be provided with the `-c` command line option.
+As of now, there are only a few things you can configure in `~/.yanki.yml`:
 
+- the path to the default Anki collection
+(usually something like `~/.local/share/Anki2/User 1/collection.anki2`).
+stored in the `collection` variable;
+
+- the path to the Anki source code
+stored in the `ankisource` variable;
+
+- the directories in which Yanki should look for templates,
+in addition to the `templates` directory in the Yanki directory.
+This can be stored in the variable `templateDirs`
+as a list of strings.
+
+For example, the configuration file could look like this:
+
+```
+ankisource: "/path/to/anki/source/anki"
+collection: "~/.local/share/Anki2/Tmpuser/collection.anki2"
+templateDirs: ['~/mytemplates', '~/more/templates']
+```
 
 # File formats
 
@@ -143,8 +164,9 @@ This is used to update the note in Anki's database when the note in the Yanki fi
 Yanki is *less expressive* than Anki itself ---
 The easy format comes at a price:
 not all of Anki's advanced features are available.
-For example, with the formatless (???) format,
-you can only provide two fields (a question and an aswer).
+For example, with the markdown format,
+you can only provide two fields (a question and an aswer),
+and you can use only one model (= note type).
 The YAML format offers more expressiveness,
 but still not as much as Anki itself.
 However, for many purposes, I find I don't really need all Anki's advanced formatting options
