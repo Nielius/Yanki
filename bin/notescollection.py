@@ -19,6 +19,7 @@
 import ruamel.yaml
 from ankiinterface import AnkiCollection, updateNote
 from convert import convertExercise
+from uuid import uuid4 as uuid
 
 class NotesCollection:
     """Our internal representation for a collection of notes with metadata."""
@@ -100,6 +101,8 @@ class NotesCollection:
         for q in self.notes:
             # if the exercise has already been added and needs to be updated:
             ankiid = q.get('anki-guid')
+            if not q.get('uuid'):
+                q['uuid'] = str(uuid())
             qconv = q.copy()
             convertExercise(qconv, 'html')
             if ankiid is not None:
