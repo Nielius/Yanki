@@ -37,7 +37,8 @@ except ImportError:
 def updateNote(note, updict):
   """Update the note <note> according to the dictionary <updict>, i.e., for every
   (key, value) pair in <updict>, set the <key> field of <note> to <value> *if*
-  there is a key field in the note's model.
+  there is a key field in the note's model. If the the key is not in the note's
+  model, it is ignored.
 
   This works exactly as mydictionary.update(anotherdictionary) would,
   but the point is the the note class does not have such an update function yet.
@@ -105,13 +106,16 @@ class AnkiCollection():
   # Adding notes
   def addNote(self, fieldsdict, deckname=None, modelname=None):
     """Add a note to the collection. The fields in the note are given by the
-    dictionary <fieldsdict>. Also adds associated cards. Returns the new note.
+    dictionary <fieldsdict>. (Any keys in the dictionary that are not in the
+    note's model, are ignored. All others are included.) Also adds associated
+    cards. Returns the new note.
 
     If the optional deck and model arguments are not given, use the current
     deck and model.
 
     If the arguments are given, this changes the current deck and model to the
     given arguments.
+
     """
     if deckname:
       self.selectDeckByName(deckname)
