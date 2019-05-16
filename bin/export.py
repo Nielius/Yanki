@@ -31,6 +31,9 @@ import jinja2
 
 from qmutils import *
 import convert
+
+from configfile import globalConfig
+
 
 # Global constants
 
@@ -385,9 +388,19 @@ def mergeArgsWithDefaults(args):
   # Deduce sensible defaults
 
   # Search for the template
+
+  templateDirs = ['./']
+  globalconfig = globalConfig()
+
+  templateDirs.extend(globalconfig.get('templateDirs') or [])
+
+  # Some other defaults:
+  templateDirs.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), '../templates/'))
+
   options['templateFilename'] = getTemplateFromOptions(
       options['templateFilename'],
-      ['./', '~/proj/questionmaker/templates'] + list(configOptions.get('templateDirs', [])))
+      templateDirs + list(configOptions.get('templateDirs', [])))
+
 
   # Deduce the target filetype, if it hasn't been given yet.
   if options['targetFiletype'] is None:
