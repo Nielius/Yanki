@@ -43,16 +43,6 @@ filetypeConversion = {
 }
 
 
-# Small functions
-
-def listTemplates():
-  for templatepath in templateDirs:
-    print("--- In {}:".format(templatepath))
-    print('\n'.join([f for f in os.listdir(templatepath) if os.path.isfile(os.path.join(templatepath, f))]))
-    print('\n')
-
-
-
 
 
 
@@ -188,7 +178,7 @@ if __name__ == "__main__":
   # Read config files
   #
   configFiles = [os.path.expanduser(args.config)] if args.config \
-    else [os.path.expanduser("~/.questionmaker.yaml")]
+    else []
 
   for f in configFiles:
     if os.path.isfile(f):
@@ -357,7 +347,7 @@ def mergeArgsWithDefaults(args):
   # Read config files
   configOptions = {}
   configFiles = [os.path.expanduser(args.config)] if args.config \
-    else [os.path.expanduser("~/.questionmaker.yaml")]
+    else []
 
   for f in configFiles:
     if os.path.isfile(f):
