@@ -4,11 +4,22 @@
 # that Anki itself uses.
 
 import sys
-
-sys.path.append("/home/niels/proj/anki") # this should probably not really be part of the code
-from anki.storage import Collection
-from anki.models import defaultField, defaultTemplate
 from base32helpers import b32stren
+from configfile import globalConfig
+
+# Import Anki source.
+# The first step is to see if the path to the source has been included in the global config.
+# in Python 3.8, do this with an assignment expression!
+ankisrcpath = globalConfig().get('ankisource')
+if ankisrcpath:
+  sys.path.append(ankisrcpath)
+try:
+  from anki.storage import Collection
+  from anki.models import defaultField, defaultTemplate
+except ImportError:
+  print("Error importing Anki source code.")
+  sys.exit()
+
 
 # Should support:
 #
