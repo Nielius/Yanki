@@ -164,3 +164,12 @@ Much more mature and probably very good,
 but the format does not lend itself so well to actually writing cards in a text editor and importing them with Anki.
 
 - Anki itself has some export features 
+
+## Links to articles on using Anki
+
+- [Everything I Know: Strategies, Tips, and Tricks for Anki](https://senrigan.io/blog/everything-i-know-strategies-tips-and-tricks-for-spaced-repetition-anki/?utm_source=hackernewsletter&utm_medium=email&utm_term=fav)
+- [Memorizing a programming language using spaced repetition software | Derek Sivers](https://sivers.org/srs)
+- [LearnItFast](https://learnitfast.io/#/)
+- [Augmenting Long-term Memory](http://augmentingcognition.com/ltm.html)
+- [Using spaced repetition systems to see through a piece of mathematics](http://cognitivemedium.com/srs-mathematics)
+
