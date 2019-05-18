@@ -180,12 +180,21 @@ So far I've had no such problems, but I would not risk losing any important data
 
 These are related projects that I'm aware of. Please let me know if you of others!
 
-- crowdAnki
---- this also attempts 
-Much more mature and probably very good,
-but the format does not lend itself so well to actually writing cards in a text editor and importing them with Anki.
-
+- [crowdAnki](https://github.com/Stvad/CrowdAnki)
+--- similar, but uses very elaborate JSON files that you would not want to write on your own.
 - Anki itself has some export features 
+- [AnkiConnect](https://github.com/FooSoft/anki-connect)
+([plugin on AnkiWeb](https://ankiweb.net/shared/info/2055492159))
+--- RESTful API for Anki features
+- [ankisync](https://github.com/patarapolw/ankisync)
+--- extending AnkiConnect
+- [anki-cli-remote](https://github.com/glutanimate/anki-cli-remote)
+--- command-line interface for Anki, based on AnkiConnect
+- [Clanki](https://github.com/marcusbuffett/Clanki)
+--- command-line spaced repetition system (stand-alone program independent of Anki)
+- [genanki](https://github.com/kerrickstaley/genanki)
+--- a library for generating Anki decks
+
 
 ## Links to articles on using Anki
 
