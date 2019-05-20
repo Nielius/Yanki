@@ -1,0 +1,6 @@
+bash getexamplefiles.sh # copy all example files from my doc dir and remove metadata from them; probably not useful for other people
+bash backupcurrentfiles.sh # backup files (Anki db & Yanki files)
+bash update.sh # send all the files to Anki and open anki
+bash exportexamples.sh # export all the examples using an HTML template
+bash restore.sh # restore backup
+cat log # view log
