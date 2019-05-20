@@ -13,7 +13,7 @@ echo "Done."
 
 # 2. Back up all the Yanki files
 echo "Copying:"
-for file in *yanki.md; do
+for file in "${arrayoftestfiles[@]}"; do
     cp -v "${file}" ${file}.bak
 done
 

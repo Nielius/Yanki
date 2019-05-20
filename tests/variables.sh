@@ -5,3 +5,5 @@
 ankicollection="${HOME}/.local/share/Anki2/Testuser/collection.anki2"
 backupcollection="${HOME}/.local/share/Anki2/Testuser/collection.anki2.bak"
 
+arrayoftestfiles=( *yanki.md "etale-fundamental-groups.yml" )
+

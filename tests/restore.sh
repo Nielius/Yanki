@@ -18,8 +18,8 @@ rm -v *yanki.md.yml
 
 
 echo "Restoring backed up Yanki files."
-for file in *yanki.md.bak; do
-    cp -v "${file}" "${file%.bak}"
+for file in "${arrayoftestfiles[@]}"; do
+    cp -v "${file}.bak" "${file}"
 done
 
 echo "$(date -Iminutes): restored backup." >> log
