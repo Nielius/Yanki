@@ -194,6 +194,9 @@ These are related projects that I'm aware of. Please let me know if you of other
 --- command-line spaced repetition system (stand-alone program independent of Anki)
 - [genanki](https://github.com/kerrickstaley/genanki)
 --- a library for generating Anki decks
+- [LaTeX Note Importer for Anki](https://tentativeconvert.github.io/LaTeX-Note-Importer-for-Anki/)
+([github](https://github.com/TentativeConvert/LaTeX-Note-Importer-for-Anki))
+--- an Anki add-on that extracts and imports Anki notes from a LaTeX file.
 
 
 ## Links to articles on using Anki
